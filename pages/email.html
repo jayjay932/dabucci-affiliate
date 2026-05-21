@@ -148,7 +148,7 @@ footer { padding: 1rem 2rem; border-top: 0.5px solid var(--border); font-size: 1
       </tr>
     </thead>
     <tbody id="tableBody">
-      <tr><td colspan="10" class="loading">⬆&nbsp; Charge ton fichier <strong>tiktok_emails_uniquement.csv</strong></td></tr>
+      <tr><td colspan="10" class="loading">Chargement automatique de <strong>tiktok_mail.csv</strong>…</td></tr>
     </tbody>
   </table>
 </div>
@@ -317,18 +317,50 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
+function loadCSVText(csvText, sourceName) {
+  allData = parseCSV(csvText);
+
+  document.getElementById('btnExport').disabled = false;
+  document.getElementById('footerText').textContent = allData.length + ' emails chargés depuis ' + sourceName;
+
+  render();
+}
+
+async function loadDefaultCSV() {
+  const defaultFile = 'tiktok_mail.csv';
+
+  try {
+    const response = await fetch(defaultFile, { cache: 'no-store' });
+
+    if (!response.ok) {
+      throw new Error('CSV introuvable');
+    }
+
+    const text = await response.text();
+    loadCSVText(text, defaultFile);
+  } catch (e) {
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="10" class="loading">Impossible de charger automatiquement <strong>tiktok_mail.csv</strong>. Vérifie que le fichier est dans le même dossier que cette page, ou charge-le manuellement.</td></tr>';
+
+    document.getElementById('footerText').textContent = 'CSV par défaut non chargé';
+    document.getElementById('footerRight').textContent = '';
+  }
+}
+
 document.getElementById('csvFile').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (!file) return;
+
   const reader = new FileReader();
+
   reader.onload = function(ev) {
-    allData = parseCSV(ev.target.result);
-    document.getElementById('btnExport').disabled = false;
-    document.getElementById('footerText').textContent = allData.length + ' emails chargés depuis ' + file.name;
-    render();
+    loadCSVText(ev.target.result, file.name);
   };
+
   reader.readAsText(file, 'UTF-8');
 });
+
+loadDefaultCSV();
 
 ['followFilter','ageFilter','engageFilter'].forEach(id => {
   document.getElementById(id).addEventListener('change', render);
