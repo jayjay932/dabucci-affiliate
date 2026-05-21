@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail ambassadrice — Admin DABUCCI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css"><link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="../css/layout.css"><link rel="stylesheet" href="../css/utils.css">
+  <style>
+  :root{
+    --admin-white:#fff;
+    --admin-cream:#fffafc;
+    --admin-pink-25:#fff7fb;
+    --admin-pink-50:#fff0f6;
+    --admin-pink-100:#ffe1ee;
+    --admin-pink-200:#ffc6dc;
+    --admin-pink-300:#ffa4c6;
+    --admin-pink-400:#f76b9d;
+    --admin-pink-500:#df3f78;
+    --admin-pink-600:#bd2f63;
+    --admin-plum:#4a1730;
+    --admin-plum-soft:#74465a;
+    --admin-text:#171015;
+    --admin-muted:#8e7481;
+    --admin-border:rgba(74,23,48,.09);
+    --admin-border-strong:rgba(74,23,48,.14);
+    --admin-green:#20b87a;
+    --admin-green-soft:#eafbf3;
+    --admin-red:#c64258;
+    --admin-red-soft:#fff0f2;
+    --admin-orange:#d9902c;
+    --admin-orange-soft:#fff7e8;
+    --admin-shadow:0 24px 60px rgba(121,39,72,.105);
+    --admin-shadow-soft:0 14px 34px rgba(121,39,72,.075);
+    --admin-ease:cubic-bezier(.2,.8,.2,1);
+  }
+
+  *{box-sizing:border-box}
+
+  html{
+    min-height:100%;
+    scroll-behavior:smooth;
+    background:var(--admin-cream);
+  }
+
+  body{
+    min-height:100vh;
+    margin:0;
+    color:var(--admin-text);
+    background:
+      radial-gradient(circle at 12% -6%, rgba(255,198,220,.72), transparent 30%),
+      radial-gradient(circle at 92% 2%, rgba(255,240,246,.96), transparent 35%),
+      linear-gradient(180deg,#fff 0%,#fff8fb 38%,#fff1f7 100%) !important;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.30) 48%,rgba(255,247,251,.72)),
+      radial-gradient(circle at 50% 0%,rgba(255,255,255,.98),transparent 58%);
+  }
+
+  body::after{
+    content:"";
+    position:fixed;
+    right:-120px;
+    top:60px;
+    z-index:-1;
+    width:440px;
+    height:440px;
+    border-radius:999px;
+    pointer-events:none;
+    background:rgba(255,164,198,.17);
+    filter:blur(72px);
+  }
+
+  button,input,select,textarea{font:inherit}
+
+  .layout-admin{
+    width:min(100%,1480px);
+    min-height:100vh;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:292px minmax(0,1fr);
+    gap:22px;
+    padding:22px;
+  }
+
+  .sidebar{
+    position:sticky;
+    top:22px;
+    height:calc(100vh - 44px);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    padding:22px;
+    border:1px solid rgba(255,255,255,.56);
+    border-radius:34px;
+    color:#fff;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,255,255,.35), transparent 28%),
+      radial-gradient(circle at 88% 14%, rgba(255,225,238,.34), transparent 35%),
+      linear-gradient(145deg,#b72d5a 0%,#df3f78 55%,#ffa4c6 118%);
+    box-shadow:0 30px 78px rgba(158,45,86,.24);
+    isolation:isolate;
+  }
+
+  .sidebar::before{
+    content:"";
+    position:absolute;
+    inset:1px;
+    z-index:-1;
+    border-radius:33px;
+    background:
+      linear-gradient(140deg,rgba(255,255,255,.25),transparent 36%),
+      linear-gradient(0deg,rgba(70,10,34,.16),transparent 59%);
+    pointer-events:none;
+  }
+
+  .sidebar::after{
+    content:"DETAIL";
+    position:absolute;
+    right:-16px;
+    bottom:22px;
+    z-index:-1;
+    color:rgba(255,255,255,.10);
+    font-family:var(--font-heading);
+    font-size:96px;
+    font-weight:600;
+    letter-spacing:.08em;
+    line-height:.8;
+    white-space:nowrap;
+    pointer-events:none;
+    transform:rotate(-90deg);
+    transform-origin:right bottom;
+  }
+
+  .sidebar__logo{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:30px;
+    color:#fff;
+    font-family:var(--font-heading);
+    font-size:30px;
+    line-height:.9;
+    letter-spacing:.15em;
+    font-weight:600;
+    text-transform:uppercase;
+    text-shadow:0 18px 38px rgba(76,9,35,.18);
+  }
+
+  .sidebar__logo::before{
+    content:"";
+    width:42px;
+    height:42px;
+    margin-bottom:10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.26);
+    background:rgba(255,255,255,.16);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 12px 28px rgba(0,0,0,.12);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  .sidebar__logo::after{
+    content:"";
+    position:absolute;
+    left:12px;
+    top:12px;
+    width:18px;
+    height:18px;
+    background:var(--admin-pink-100);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+
+  .sidebar__logo small{
+    display:inline-flex!important;
+    width:max-content;
+    padding:7px 11px;
+    border:1px solid rgba(255,255,255,.26);
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    color:rgba(255,255,255,.88)!important;
+    font-family:var(--font-body)!important;
+    font-size:10px!important;
+    line-height:1!important;
+    font-weight:850;
+    letter-spacing:.12em!important;
+    text-transform:uppercase;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  .sidebar__nav{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    flex:1;
+  }
+
+  .sidebar__item{
+    position:relative;
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:0 13px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:18px;
+    color:rgba(255,255,255,.82);
+    text-decoration:none;
+    font-size:13px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:-.01em;
+    background:rgba(255,255,255,.08);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.09);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    transition:transform .2s var(--admin-ease), background .2s var(--admin-ease), color .2s var(--admin-ease), border-color .2s var(--admin-ease);
+  }
+
+  .sidebar__item:hover{
+    transform:translateX(3px);
+    color:#fff;
+    background:rgba(255,255,255,.15);
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .sidebar__item--active{
+    color:var(--admin-plum);
+    background:rgba(255,255,255,.92);
+    border-color:rgba(255,255,255,.48);
+    box-shadow:0 14px 30px rgba(70,13,35,.13), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+
+  .sidebar__icon{
+    width:28px;
+    height:28px;
+    min-width:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    background:rgba(255,255,255,.13);
+    font-size:14px;
+  }
+
+  .sidebar__item--active .sidebar__icon{
+    background:var(--admin-pink-50);
+  }
+
+  .sidebar__footer{
+    margin-top:auto;
+    padding:16px;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:22px;
+    background:rgba(255,255,255,.11);
+    color:#fff;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.11);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  #admin-name{
+    color:#fff!important;
+    font-size:14px!important;
+    font-weight:900!important;
+  }
+
+  .sidebar__footer div[style*="color:var(--gray-400)"]{
+    color:rgba(255,255,255,.66)!important;
+    font-size:11px!important;
+    font-weight:700;
+  }
+
+  #btn-logout{
+    width:100%;
+    min-height:38px;
+    margin-top:14px!important;
+    border:1px solid rgba(255,255,255,.22)!important;
+    border-radius:14px!important;
+    background:rgba(255,255,255,.12)!important;
+    color:#fff!important;
+    font-size:12px!important;
+    font-weight:850;
+    text-align:center;
+    transition:background .2s var(--admin-ease), transform .2s var(--admin-ease);
+  }
+
+  #btn-logout:hover{
+    background:rgba(255,255,255,.20)!important;
+    transform:translateY(-1px);
+  }
+
+  .admin-main{
+    min-width:0;
+    padding:2px 0 28px;
+  }
+
+  .admin-main > div:first-child{
+    margin-bottom:18px!important;
+    padding:12px 16px;
+    border:1px solid var(--admin-border);
+    border-radius:999px;
+    background:rgba(255,255,255,.76);
+    box-shadow:var(--admin-shadow-soft);
+    color:var(--admin-muted)!important;
+    font-size:12px!important;
+    font-weight:800;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .admin-main > div:first-child a{
+    color:var(--admin-pink-600)!important;
+    font-weight:900;
+  }
+
+  .profile-hero{
+    position:relative;
+    overflow:hidden;
+    min-height:220px;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:end;
+    gap:22px;
+    margin-bottom:18px;
+    padding:28px;
+    border:1px solid var(--admin-border);
+    border-radius:34px;
+    background:
+      radial-gradient(circle at 90% 0%,rgba(255,225,238,.86),transparent 34%),
+      linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,251,.86));
+    box-shadow:var(--admin-shadow);
+    backdrop-filter:blur(22px) saturate(150%);
+    -webkit-backdrop-filter:blur(22px) saturate(150%);
+  }
+
+  .profile-hero::before{
+    content:"";
+    position:absolute;
+    left:28px;
+    top:28px;
+    width:44px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--admin-pink-500),rgba(223,63,120,0));
+    opacity:.52;
+  }
+
+  .profile-hero::after{
+    content:"Profil";
+    position:absolute;
+    right:-6px;
+    top:18px;
+    color:rgba(223,63,120,.055);
+    font-family:var(--font-heading);
+    font-size:104px;
+    line-height:.8;
+    letter-spacing:-.04em;
+    font-weight:600;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  .avatar,
+  .avatar--lg,
+  #avatar{
+    position:relative;
+    z-index:1;
+    width:96px!important;
+    height:96px!important;
+    min-width:96px!important;
+    border-radius:32px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    color:var(--admin-pink-600)!important;
+    background:linear-gradient(180deg,#fff,var(--admin-pink-50))!important;
+    border:1px solid rgba(223,63,120,.12)!important;
+    box-shadow:0 18px 42px rgba(121,39,72,.12);
+    font-size:28px!important;
+    font-weight:950!important;
+  }
+
+  #hero-name{
+    position:relative;
+    z-index:1;
+    color:var(--admin-text)!important;
+    font-size:clamp(46px,5vw,76px)!important;
+    line-height:.88!important;
+    letter-spacing:-.06em!important;
+    margin-bottom:12px!important;
+  }
+
+  #hero-email{
+    position:relative;
+    z-index:1;
+    color:var(--admin-plum-soft)!important;
+    font-weight:650;
+  }
+
+  .profile-hero div[style*="background:var(--pink-50)"]{
+    position:relative;
+    z-index:1;
+    background:var(--admin-pink-50)!important;
+    color:var(--admin-pink-600)!important;
+    border:1px solid rgba(223,63,120,.12);
+    padding:7px 12px!important;
+    font-weight:900!important;
+  }
+
+  .profile-hero > div:last-child{
+    position:relative;
+    z-index:1;
+  }
+
+  .code-card{
+    position:relative;
+    overflow:hidden;
+    margin-bottom:18px;
+    padding:26px;
+    border:1px solid rgba(255,255,255,.54);
+    border-radius:34px;
+    color:#fff;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,255,255,.35), transparent 28%),
+      radial-gradient(circle at 88% 14%, rgba(255,225,238,.34), transparent 35%),
+      linear-gradient(145deg,#b72d5a 0%,#df3f78 55%,#ffa4c6 118%);
+    box-shadow:0 30px 78px rgba(158,45,86,.24);
+    isolation:isolate;
+  }
+
+  .code-card::before{
+    content:"";
+    position:absolute;
+    inset:1px;
+    z-index:-1;
+    border-radius:33px;
+    background:
+      linear-gradient(140deg,rgba(255,255,255,.25),transparent 36%),
+      linear-gradient(0deg,rgba(70,10,34,.16),transparent 59%);
+    pointer-events:none;
+  }
+
+  .code-card::after{
+    content:"AFFILIATE";
+    position:absolute;
+    right:-18px;
+    bottom:-6px;
+    z-index:-1;
+    color:rgba(255,255,255,.10);
+    font-family:var(--font-heading);
+    font-size:clamp(68px,10vw,124px);
+    font-weight:600;
+    letter-spacing:.08em;
+    line-height:.78;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  .code-card > div:first-child{
+    color:rgba(255,255,255,.78)!important;
+    font-weight:900!important;
+  }
+
+  .code-url-box,
+  .code-card div[style*="background:rgba(255,255,255,.18)"]{
+    border:1px solid rgba(255,255,255,.28)!important;
+    border-radius:20px!important;
+    background:rgba(255,255,255,.16)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 34px rgba(70,13,35,.12);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+
+  .code-input,
+  #link-code,
+  #link-full{
+    color:#fff!important;
+    font-weight:750!important;
+  }
+
+  .code-input::placeholder,
+  #link-code::placeholder,
+  #link-full::placeholder{
+    color:rgba(255,255,255,.58)!important;
+  }
+
+  #btn-save-code,
+  #btn-save-link,
+  #btn-copy-link,
+  #btn-edit-taux,
+  #btn-save-taux,
+  #btn-cancel-taux{
+    border:1px solid rgba(255,255,255,.25)!important;
+    border-radius:14px!important;
+    background:rgba(255,255,255,.18)!important;
+    color:#fff!important;
+    font-weight:900!important;
+    transition:transform .2s var(--admin-ease), background .2s var(--admin-ease);
+  }
+
+  #btn-save-code:hover,
+  #btn-save-link:hover,
+  #btn-copy-link:hover,
+  #btn-edit-taux:hover,
+  #btn-save-taux:hover,
+  #btn-cancel-taux:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.26)!important;
+  }
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:14px;
+    margin-bottom:18px;
+  }
+
+  .kpi-card{
+    position:relative!important;
+    overflow:hidden;
+    min-height:170px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:18px;
+    border:1px solid var(--admin-border);
+    border-radius:28px;
+    background:rgba(255,255,255,.76);
+    box-shadow:0 15px 34px rgba(121,39,72,.075);
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+  }
+
+  .kpi-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 20% 0%,rgba(255,225,238,.78),transparent 36%),
+      linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.46));
+    opacity:.82;
+    pointer-events:none;
+  }
+
+  .kpi-card::after{
+    content:"";
+    position:absolute;
+    top:15px;
+    right:15px;
+    width:38px;
+    height:38px;
+    border-radius:999px;
+    border:1px solid rgba(223,63,120,.12);
+    background:rgba(255,255,255,.68);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+  }
+
+  .kpi-card__icon{
+    position:absolute;
+    top:24px;
+    right:25px;
+    z-index:1;
+    font-size:18px;
+  }
+
+  .kpi-card__label,
+  .kpi-card__value,
+  .kpi-card__sub{
+    position:relative;
+    z-index:1;
+  }
+
+  .kpi-card__label{
+    margin-bottom:9px;
+    color:var(--admin-muted);
+    font-size:11px;
+    line-height:1.25;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.075em;
+  }
+
+  .kpi-card__value{
+    color:var(--admin-text);
+    font-size:clamp(28px,3vw,40px)!important;
+    line-height:.95;
+    font-weight:950;
+    letter-spacing:-.06em;
+  }
+
+  .kpi-card__sub{
+    margin-top:8px;
+    color:var(--admin-muted);
+    font-size:12px;
+    font-weight:650;
+  }
+
+  #btn-edit-codes,
+  #btn-add-commission{
+    z-index:2!important;
+    top:12px!important;
+    right:12px!important;
+    background:var(--admin-pink-500)!important;
+    color:#fff!important;
+    min-height:26px;
+    border-radius:999px!important;
+    box-shadow:0 10px 22px rgba(223,63,120,.18);
+  }
+
+  .two-col{
+    display:grid;
+    grid-template-columns:minmax(0,.95fr) minmax(360px,.75fr);
+    gap:18px;
+    margin-bottom:18px;
+  }
+
+  .info-section{
+    position:relative;
+    overflow:hidden;
+    margin-bottom:18px;
+    border:1px solid var(--admin-border);
+    border-radius:30px;
+    background:
+      radial-gradient(circle at 90% 0%,rgba(255,225,238,.72),transparent 34%),
+      linear-gradient(135deg,rgba(255,255,255,.90),rgba(255,248,251,.82));
+    box-shadow:var(--admin-shadow-soft);
+    backdrop-filter:blur(22px) saturate(150%);
+    -webkit-backdrop-filter:blur(22px) saturate(150%);
+  }
+
+  .info-section__title{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:22px 22px 14px;
+    border-bottom:1px solid rgba(74,23,48,.065);
+    color:var(--admin-plum);
+    font-family:var(--font-heading);
+    font-size:29px;
+    line-height:1;
+    letter-spacing:-.04em;
+    font-weight:600;
+  }
+
+  .info-section__title::before{
+    content:"";
+    position:absolute;
+    left:22px;
+    top:18px;
+    width:40px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--admin-pink-500),rgba(223,63,120,0));
+    opacity:.45;
+  }
+
+  .info-row,
+  .month-row,
+  .pay-row{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:15px 22px;
+    border-bottom:1px solid rgba(74,23,48,.06);
+  }
+
+  .info-row:last-child,
+  .month-row:last-child,
+  .pay-row:last-child{
+    border-bottom:none;
+  }
+
+  .info-row__icon{
+    width:44px;
+    height:44px;
+    min-width:44px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--admin-pink-600);
+    background:linear-gradient(180deg,#fff,var(--admin-pink-50));
+    border:1px solid rgba(223,63,120,.10);
+    box-shadow:0 12px 24px rgba(121,39,72,.075);
+    font-size:17px;
+  }
+
+  .info-row__label{
+    margin-bottom:4px;
+    color:var(--admin-muted);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.075em;
+    text-transform:uppercase;
+  }
+
+  .info-row__value{
+    color:var(--admin-text);
+    font-size:14px;
+    line-height:1.38;
+    font-weight:750;
+    overflow-wrap:anywhere;
+  }
+
+  .btn-edit-inline{
+    min-height:31px;
+    border:1px solid rgba(223,63,120,.12);
+    border-radius:999px;
+    background:var(--admin-pink-50);
+    color:var(--admin-pink-600);
+    padding:0 11px;
+    font-size:11px;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  .btn,
+  .btn--outline,
+  .btn--primary,
+  .btn--sm{
+    border-radius:14px!important;
+    min-height:38px;
+    display:inline-flex!important;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    font-weight:900!important;
+    text-decoration:none!important;
+    transition:transform .2s var(--admin-ease), box-shadow .2s var(--admin-ease), filter .2s var(--admin-ease), background .2s var(--admin-ease);
+  }
+
+  .btn--primary{
+    color:#fff!important;
+    background:linear-gradient(135deg,var(--admin-pink-500),var(--admin-pink-400))!important;
+    border:1px solid rgba(255,255,255,.50)!important;
+    box-shadow:0 14px 30px rgba(223,63,120,.23), inset 0 1px 0 rgba(255,255,255,.20)!important;
+  }
+
+  .btn--outline{
+    color:var(--admin-plum)!important;
+    background:rgba(255,255,255,.72)!important;
+    border:1px solid var(--admin-border)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 10px 22px rgba(121,39,72,.045);
+  }
+
+  .btn:hover,
+  .btn-edit-inline:hover{
+    transform:translateY(-1px);
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:26px;
+    padding:0 10px;
+    border-radius:999px;
+    font-size:10px;
+    font-weight:900;
+  }
+
+  .badge--success{
+    color:#16895c;
+    background:var(--admin-green-soft);
+    border:1px solid rgba(32,184,122,.14);
+  }
+
+  .badge--error{
+    color:var(--admin-red);
+    background:var(--admin-red-soft);
+    border:1px solid rgba(198,66,88,.14);
+  }
+
+  .badge--warning{
+    color:var(--admin-orange);
+    background:var(--admin-orange-soft);
+    border:1px solid rgba(217,144,44,.14);
+  }
+
+  .table{
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+  }
+
+  .table thead th{
+    padding:14px;
+    color:var(--admin-muted);
+    background:rgba(255,255,255,.70);
+    border-bottom:1px solid rgba(74,23,48,.07);
+    font-size:10px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.075em;
+    text-align:left;
+    white-space:nowrap;
+  }
+
+  .table td{
+    padding:14px;
+    border-bottom:1px solid rgba(74,23,48,.06);
+    color:var(--admin-plum-soft);
+    font-size:13px;
+    font-weight:650;
+    white-space:nowrap;
+  }
+
+  .table tr:last-child td{
+    border-bottom:none;
+  }
+
+  #admin-note{
+    min-height:112px;
+    border:1px solid var(--admin-border)!important;
+    border-radius:20px!important;
+    background:rgba(255,255,255,.78)!important;
+    color:var(--admin-text)!important;
+    padding:15px!important;
+    font-size:14px!important;
+    font-weight:650;
+    outline:none!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 10px 22px rgba(121,39,72,.045);
+  }
+
+  #admin-note:focus{
+    border-color:rgba(223,63,120,.34)!important;
+    background:#fff!important;
+    box-shadow:0 0 0 4px rgba(223,63,120,.10), inset 0 1px 0 rgba(255,255,255,.88)!important;
+  }
+
+  .quick-modal{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:rgba(28,13,21,.45);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  .quick-modal.hidden,
+  .hidden{
+    display:none!important;
+  }
+
+  .quick-box{
+    width:min(100%,440px);
+    position:relative;
+    overflow:hidden;
+    padding:28px;
+    border:1px solid var(--admin-border);
+    border-radius:32px;
+    background:
+      radial-gradient(circle at 90% 0%,rgba(255,225,238,.86),transparent 34%),
+      linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,248,251,.92));
+    box-shadow:0 28px 80px rgba(28,13,21,.18);
+  }
+
+  .quick-box::before{
+    content:"";
+    position:absolute;
+    left:28px;
+    top:24px;
+    width:40px;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--admin-pink-500),rgba(223,63,120,0));
+    opacity:.48;
+  }
+
+  .quick-box__title{
+    margin:16px 0 20px;
+    color:var(--admin-text);
+    font-family:var(--font-heading);
+    font-size:34px;
+    line-height:.98;
+    letter-spacing:-.045em;
+    font-weight:600;
+  }
+
+  .form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
+
+  .form-label{
+    color:var(--admin-muted)!important;
+    font-size:10px!important;
+    font-weight:900!important;
+    letter-spacing:.075em!important;
+    text-transform:uppercase!important;
+  }
+
+  .form-input,
+  .form-select{
+    width:100%;
+    min-height:50px;
+    border:1px solid var(--admin-border)!important;
+    border-radius:18px!important;
+    background:rgba(255,255,255,.82)!important;
+    color:var(--admin-text)!important;
+    padding:0 15px!important;
+    font-size:15px!important;
+    font-weight:650!important;
+    outline:none!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 10px 22px rgba(121,39,72,.045);
+  }
+
+  .form-input:focus,
+  .form-select:focus{
+    border-color:rgba(223,63,120,.34)!important;
+    background:#fff!important;
+    box-shadow:0 0 0 4px rgba(223,63,120,.10), inset 0 1px 0 rgba(255,255,255,.88)!important;
+  }
+
+  .flex-1{
+    flex:1;
+  }
+
+  @media(max-width:1240px){
+    .layout-admin{
+      grid-template-columns:240px minmax(0,1fr);
+      gap:16px;
+      padding:16px;
+    }
+
+    .sidebar{
+      top:16px;
+      height:calc(100vh - 32px);
+      padding:18px;
+    }
+
+    .kpi-grid{
+      grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    }
+
+    .two-col{
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media(max-width:860px){
+    .layout-admin{
+      display:block;
+      padding:10px 10px 22px;
+    }
+
+    .sidebar{
+      position:relative;
+      top:auto;
+      height:auto;
+      margin-bottom:12px;
+      border-radius:30px;
+    }
+
+    .sidebar__nav{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .sidebar__item{
+      min-height:46px;
+      font-size:12px;
+    }
+
+    .sidebar__footer{
+      margin-top:14px;
+    }
+
+    .profile-hero{
+      display:block;
+      min-height:auto;
+      padding:24px 18px;
+      border-radius:30px;
+    }
+
+    #avatar{
+      margin-bottom:18px;
+    }
+
+    #hero-name{
+      font-size:42px!important;
+    }
+
+    .profile-hero > div:last-child{
+      align-items:flex-start!important;
+      margin-top:18px;
+    }
+
+    .code-card{
+      padding:22px 16px;
+      border-radius:30px;
+    }
+
+    .code-card div[style*="display:flex;align-items:center;gap:var(--space-3)"]{
+      flex-direction:column;
+      align-items:stretch!important;
+    }
+
+    .kpi-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr))!important;
+      gap:10px;
+    }
+
+    .kpi-card{
+      min-height:150px;
+      padding:15px;
+      border-radius:24px;
+    }
+
+    .info-section{
+      border-radius:26px;
+    }
+
+    .info-section__title{
+      padding:20px 16px 12px;
+      font-size:25px;
+    }
+
+    .info-row,
+    .month-row,
+    .pay-row{
+      padding:14px 16px;
+    }
+  }
+
+  @media(max-width:430px){
+    .sidebar__nav{
+      grid-template-columns:1fr;
+    }
+
+    .kpi-grid{
+      grid-template-columns:1fr!important;
+    }
+
+    .quick-box{
+      padding:24px 18px;
+      border-radius:28px;
+    }
+
+    .quick-box div[style*="display:flex;gap:var(--space-3)"]{
+      flex-direction:column;
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      scroll-behavior:auto!important;
+      transition:none!important;
+      animation:none!important;
+    }
+  }
+  </style>
+</head>
+<body>
+<div class="layout-admin">
+  <aside class="sidebar">
+    <div class="sidebar__logo">DABUCCI<small style="display:block;font-size:10px;font-family:var(--font-body);color:var(--pink-400);letter-spacing:0">Admin</small></div>
+    <nav class="sidebar__nav">
+      <a href="/admin/dashboard.html"     class="sidebar__item"><span class="sidebar__icon">🏠</span> Tableau de bord</a>
+      <a href="/admin/candidatures.html"  class="sidebar__item"><span class="sidebar__icon">📋</span> Candidatures</a>
+      <a href="/admin/ambassadrices.html" class="sidebar__item sidebar__item--active"><span class="sidebar__icon">👯</span> Ambassadrices</a>
+      <a href="/pages/email.html" class="sidebar__item"><span class="sidebar__icon">✨</span> Influs</a>
+      <a href="/admin/paiements.html"     class="sidebar__item"><span class="sidebar__icon">💳</span> Paiements</a>
+    </nav>
+    <div class="sidebar__footer">
+      <div id="admin-name" style="font-size:var(--text-sm);font-weight:600;color:var(--gray-700)">—</div>
+      <div style="font-size:var(--text-xs);color:var(--gray-400);margin-top:2px">Administrateur</div>
+      <button id="btn-logout" style="margin-top:var(--space-3);font-size:var(--text-xs);color:var(--color-error);background:none;border:none;cursor:pointer;padding:0;display:block">🚪 Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div style="margin-bottom:var(--space-6);font-size:var(--text-sm);color:var(--gray-500)">
+      <a href="/admin/ambassadrices.html" style="color:var(--color-primary);text-decoration:none">← Ambassadrices</a>
+      <span style="margin:0 var(--space-2)">/</span><span id="breadcrumb">—</span>
+    </div>
+
+    <!-- Profil -->
+    <div class="profile-hero">
+      <div class="avatar avatar--lg" id="avatar">—</div>
+      <div style="flex:1;min-width:200px">
+        <div style="font-family:var(--font-heading);font-size:var(--text-3xl);margin-bottom:var(--space-1)" id="hero-name">—</div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:var(--pink-50);color:var(--color-primary);font-size:var(--text-xs);font-weight:600;padding:3px 12px;border-radius:var(--radius-full);margin-bottom:var(--space-3)">♡ Ambassadrice</div>
+        <div style="font-size:var(--text-sm);color:var(--gray-500)" id="hero-email">—</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3)">
+        <span id="statut-badge"></span>
+        <button class="btn btn--outline btn--sm" id="btn-toggle">—</button>
+      </div>
+    </div>
+
+    <!-- Lien affilié -->
+    <div class="code-card">
+      <div style="font-size:var(--text-xs);opacity:.8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Lien affilié</div>
+
+      <!-- Code affilié modifiable directement -->
+      <div style="font-size:var(--text-xs);opacity:.85;margin-bottom:var(--space-2)">Code affilié</div>
+      <div style="background:rgba(255,255,255,.18);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+        <input id="link-code" type="text"
+          style="flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:var(--font-mono);font-size:var(--text-sm)"
+          placeholder="ex: maria15">
+        <button id="btn-save-code" style="background:rgba(255,255,255,.25);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);font-weight:600;padding:var(--space-2) var(--space-3);cursor:pointer;white-space:nowrap">💾 Code</button>
+      </div>
+
+      <!-- Lien complet modifiable directement -->
+      <div style="font-size:var(--text-xs);opacity:.85;margin-bottom:var(--space-2)">Lien affilié complet</div>
+      <div style="background:rgba(255,255,255,.18);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+        <input id="link-full" type="text"
+          style="flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:var(--font-mono);font-size:var(--text-sm)"
+          placeholder="https://dabucci.com/...">
+        <button id="btn-save-link" style="background:rgba(255,255,255,.25);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);font-weight:600;padding:var(--space-2) var(--space-3);cursor:pointer;white-space:nowrap">💾 Lien</button>
+        <button id="btn-copy-link" style="background:rgba(255,255,255,.15);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);padding:var(--space-2) var(--space-3);cursor:pointer">📋</button>
+      </div>
+
+      <!-- Taux -->
+      <div style="display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap">
+        <div style="display:inline-flex;align-items:center;gap:var(--space-2);background:rgba(255,255,255,.15);border-radius:var(--radius-full);padding:3px var(--space-3) 3px 6px;font-size:var(--text-xs)">
+          <span style="background:rgba(255,255,255,.3);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700" id="taux-badge">—</span>
+          Commission actuelle : <strong id="taux-label">—%</strong>
+        </div>
+        <div id="taux-display-wrap" style="display:flex;align-items:center;gap:var(--space-2)">
+          <button id="btn-edit-taux" style="background:rgba(255,255,255,.2);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);font-weight:600;padding:4px 10px;cursor:pointer">✏ Modifier taux</button>
+        </div>
+        <div id="taux-edit-wrap" style="display:none;align-items:center;gap:var(--space-2)">
+          <input id="taux-input" type="number" min="1" max="100" step="0.5"
+            style="width:70px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:var(--radius-sm);color:#fff;padding:4px 8px;font-size:var(--text-sm);outline:none">
+          <span style="opacity:.7;font-size:var(--text-xs)">%</span>
+          <button id="btn-save-taux" style="background:rgba(255,255,255,.3);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);font-weight:600;padding:4px 12px;cursor:pointer">✓ OK</button>
+          <button id="btn-cancel-taux" style="background:rgba(255,255,255,.1);border:none;border-radius:var(--radius-md);color:#fff;font-size:var(--text-xs);padding:4px 8px;cursor:pointer">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="kpi-card" style="position:relative">
+        <div class="kpi-card__icon">🔗</div>
+        <div class="kpi-card__label">Codes utilisés</div>
+        <div class="kpi-card__value" id="kpi-codes">—</div>
+        <div class="kpi-card__sub">utilisations</div>
+        <button id="btn-edit-codes" style="position:absolute;top:var(--space-2);right:var(--space-2);background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-full);font-size:10px;font-weight:700;padding:2px 7px;cursor:pointer">✏</button>
+      </div>
+      <div class="kpi-card" style="position:relative">
+        <div class="kpi-card__icon">✅</div>
+        <div class="kpi-card__label">Ventes validées</div>
+        <div class="kpi-card__value" id="kpi-ventes">—</div>
+        <div class="kpi-card__sub">commissions</div>
+        <button id="btn-add-commission" style="position:absolute;top:var(--space-2);right:var(--space-2);background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-full);font-size:10px;font-weight:700;padding:2px 7px;cursor:pointer">+</button>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__icon">💰</div>
+        <div class="kpi-card__label">Gains total</div>
+        <div class="kpi-card__value" id="kpi-gains-total" style="font-size:var(--text-xl)">—</div>
+        <div class="kpi-card__sub">paiements payés</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__icon">🕐</div>
+        <div class="kpi-card__label">Gains à venir</div>
+        <div class="kpi-card__value" id="kpi-gains-avenir" style="font-size:var(--text-xl)">—</div>
+        <div class="kpi-card__sub">virements prévus</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__icon">📅</div>
+        <div class="kpi-card__label">Prochain paiement</div>
+        <div class="kpi-card__value" id="kpi-nextpay" style="font-size:var(--text-base)">—</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <!-- Informations -->
+        <div class="info-section">
+          <div class="info-section__title">Informations personnelles</div>
+          <div class="info-row"><div class="info-row__icon">👤</div><div style="flex:1"><div class="info-row__label">Prénom</div><div class="info-row__value" id="i-prenom">—</div></div><button class="btn-edit-inline" data-modal="prenom">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">👤</div><div style="flex:1"><div class="info-row__label">Nom</div><div class="info-row__value" id="i-nom">—</div></div><button class="btn-edit-inline" data-modal="nom">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">✉</div><div style="flex:1"><div class="info-row__label">Email</div><div class="info-row__value" id="i-email">—</div></div></div>
+          <div class="info-row"><div class="info-row__icon">📞</div><div style="flex:1"><div class="info-row__label">Téléphone</div><div class="info-row__value" id="i-phone">—</div></div><button class="btn-edit-inline" data-modal="phone">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">🎵</div><div style="flex:1"><div class="info-row__label">TikTok</div><div class="info-row__value" id="i-tiktok">—</div></div><button class="btn-edit-inline" data-modal="tiktok">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">📸</div><div style="flex:1"><div class="info-row__label">Instagram</div><div class="info-row__value" id="i-insta">—</div></div><button class="btn-edit-inline" data-modal="insta">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">📅</div><div style="flex:1"><div class="info-row__label">Depuis</div><div class="info-row__value" id="i-since">—</div></div></div>
+        </div>
+
+        <!-- Paiement -->
+        <div class="info-section">
+          <div class="info-section__title">Coordonnées de paiement</div>
+          <div class="info-row"><div class="info-row__icon">🏦</div><div style="flex:1"><div class="info-row__label">Méthode</div><div class="info-row__value" id="p-methode">—</div></div><button class="btn-edit-inline" data-modal="pay">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">🔢</div><div style="flex:1"><div class="info-row__label">IBAN</div><div class="info-row__value" id="p-iban" style="font-family:var(--font-mono);font-size:var(--text-xs)">—</div></div><button class="btn-edit-inline" data-modal="pay">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">🔤</div><div style="flex:1"><div class="info-row__label">Titulaire</div><div class="info-row__value" id="p-titulaire">—</div></div><button class="btn-edit-inline" data-modal="pay">✏ Modifier</button></div>
+          <div class="info-row"><div class="info-row__icon">💳</div><div style="flex:1"><div class="info-row__label">Email PayPal</div><div class="info-row__value" id="p-paypal">—</div></div><button class="btn-edit-inline" data-modal="pay">✏ Modifier</button></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="info-section">
+          <div class="info-section__title">Gains par mois</div>
+          <div id="gains-months"><div style="text-align:center;color:var(--gray-400);font-size:var(--text-sm);padding:var(--space-8)">Chargement…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paiements -->
+    <div class="info-section" style="margin-bottom:var(--space-5)">
+      <div class="info-section__title">Paiements <button class="btn btn--primary btn--sm" id="btn-add-pay">+ Ajouter</button></div>
+      <div id="pay-history"><div style="text-align:center;color:var(--gray-400);font-size:var(--text-sm);padding:var(--space-8)">Chargement…</div></div>
+    </div>
+
+    <!-- Commissions -->
+    <div class="info-section" style="margin-bottom:var(--space-5)">
+      <div class="info-section__title">Commissions récentes</div>
+      <div style="overflow-x:auto">
+        <table class="table">
+          <thead><tr><th>Réf.</th><th>Vente</th><th>Commission</th><th>Statut</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody id="comm-tbody"><tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:var(--space-8)">Chargement…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Note admin -->
+    <div class="info-section">
+      <div class="info-section__title">Note admin <button class="btn btn--outline btn--sm" id="btn-save-note">Enregistrer</button></div>
+      <div style="padding:var(--space-5)">
+        <textarea id="admin-note" class="form-input" style="height:100px;resize:none;width:100%" placeholder="Notes internes…"></textarea>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Quick modals -->
+<div class="quick-modal hidden" id="qm-prenom"><div class="quick-box">
+  <div class="quick-box__title">Modifier le prénom</div>
+  <input type="text" id="qm-prenom-val" class="form-input" style="margin-bottom:var(--space-4)">
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-prenom-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-prenom-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-nom"><div class="quick-box">
+  <div class="quick-box__title">Modifier le nom</div>
+  <input type="text" id="qm-nom-val" class="form-input" style="margin-bottom:var(--space-4)">
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-nom-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-nom-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-phone"><div class="quick-box">
+  <div class="quick-box__title">Modifier le téléphone</div>
+  <input type="tel" id="qm-phone-val" class="form-input" placeholder="06 12 34 56 78" style="margin-bottom:var(--space-4)">
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-phone-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-phone-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-tiktok"><div class="quick-box">
+  <div class="quick-box__title">Modifier le TikTok</div>
+  <input type="text" id="qm-tiktok-val" class="form-input" placeholder="@compte ou URL" style="margin-bottom:var(--space-4)">
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-tiktok-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-tiktok-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-insta"><div class="quick-box">
+  <div class="quick-box__title">Modifier l'Instagram</div>
+  <input type="text" id="qm-insta-val" class="form-input" placeholder="@compte" style="margin-bottom:var(--space-4)">
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-insta-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-insta-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-pay"><div class="quick-box">
+  <div class="quick-box__title">Coordonnées de paiement</div>
+  <div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-4)">
+    <div class="form-group"><label class="form-label">Méthode</label>
+      <select id="qm-pay-methode" class="form-input form-select"><option value="virement">Virement bancaire</option><option value="paypal">PayPal</option></select></div>
+    <div class="form-group"><label class="form-label">IBAN</label><input type="text" id="qm-pay-iban" class="form-input" placeholder="FR76 XXXX…"></div>
+    <div class="form-group"><label class="form-label">Titulaire</label><input type="text" id="qm-pay-titulaire" class="form-input" placeholder="Prénom Nom"></div>
+    <div class="form-group"><label class="form-label">Email PayPal</label><input type="email" id="qm-pay-paypal" class="form-input" placeholder="email@paypal.com"></div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-pay-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-pay-save">Enregistrer</button></div>
+</div></div>
+
+<div class="quick-modal hidden" id="qm-addpay"><div class="quick-box">
+  <div class="quick-box__title">Ajouter un paiement</div>
+  <div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-4)">
+    <div class="form-group"><label class="form-label">Montant (€)</label><input type="number" id="qm-ap-montant" class="form-input" min="0" step="0.01"></div>
+    <div class="form-group"><label class="form-label">Méthode</label><select id="qm-ap-methode" class="form-input form-select"><option value="virement">Virement</option><option value="paypal">PayPal</option></select></div>
+    <div class="form-group"><label class="form-label">Date prévue</label><input type="date" id="qm-ap-date" class="form-input"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+      <div class="form-group"><label class="form-label">Période début</label><input type="date" id="qm-ap-debut" class="form-input"></div>
+      <div class="form-group"><label class="form-label">Période fin</label><input type="date" id="qm-ap-fin" class="form-input"></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-ap-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-ap-save">Créer</button></div>
+</div></div>
+
+<!-- Modal modifier codes utilisés -->
+<div class="quick-modal hidden" id="qm-codes"><div class="quick-box">
+  <div class="quick-box__title">Modifier le nombre de codes utilisés</div>
+  <div style="margin-bottom:var(--space-6)">
+    <label class="form-label" style="margin-bottom:var(--space-2);display:block">Nombre d'utilisations</label>
+    <input type="number" id="qm-codes-val" class="form-input" min="0" step="1" placeholder="ex: 42">
+    <div style="font-size:var(--text-xs);color:var(--gray-400);margin-top:var(--space-2)">Ce chiffre est enregistré dans ambassadrices.codes_total_manual.</div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-codes-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-codes-save">Enregistrer</button></div>
+</div></div>
+
+<!-- Modal modifier ventes validées -->
+<div class="quick-modal hidden" id="qm-commission"><div class="quick-box">
+  <div class="quick-box__title">Modifier le nombre de ventes validées</div>
+  <div style="margin-bottom:var(--space-6)">
+    <label class="form-label" style="margin-bottom:var(--space-2);display:block">Nombre de ventes validées</label>
+    <input type="number" id="qm-ventes-val" class="form-input" min="0" step="1" placeholder="ex: 10">
+    <div style="font-size:var(--text-xs);color:var(--gray-400);margin-top:var(--space-2)">Ce chiffre est enregistré dans ambassadrices.ventes_total_manual.</div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)"><button class="btn btn--outline flex-1" id="qm-commission-cancel">Annuler</button><button class="btn btn--primary flex-1" id="qm-commission-save">Enregistrer</button></div>
+</div></div>
+
+<script type="module">
+  import { requireAdmin, goTo } from '../js/session.js'
+  import { supabase }           from '../js/supabase.js'
+  import { toast }              from '../js/toast.js'
+  import { formatEuro, formatDate, formatMois, initials } from '../js/utils.js'
+
+  async function init() {
+    const profile = await requireAdmin()
+    if (!profile) return
+
+    document.getElementById('admin-name').textContent = ((profile.prenom||'') + ' ' + (profile.nom||'')).trim()
+    document.getElementById('btn-logout').addEventListener('click', async function() {
+      this.disabled = true; this.textContent = '...'
+      await supabase.auth.signOut(); goTo('/admin/login.html')
+    })
+
+    const ambaId = localStorage.getItem('dabucci_amba_id')
+    if (!ambaId) {
+      document.querySelector('.admin-main').innerHTML = '<div style="padding:var(--space-8);text-align:center"><p style="color:var(--gray-500);margin-bottom:var(--space-4)">Aucune ambassadrice sélectionnée.</p><a href="/admin/ambassadrices.html" class="btn btn--primary">← Retour à la liste</a></div>'
+      return
+    }
+
+    let profileData = null, linkData = null, piData = null, ambaData = null, appData = null
+
+    // ── Helpers ────────────────────────────────────────────────
+    function set(id, val) {
+      var el = document.getElementById(id)
+      if (el) el.textContent = val || '—'
+    }
+    function openModal(id) { document.getElementById(id).classList.remove('hidden') }
+    function closeModal(id){ document.getElementById(id).classList.add('hidden') }
+
+    // Fermer modals en cliquant overlay
+    document.querySelectorAll('.quick-modal').forEach(function(m) {
+      m.addEventListener('click', function(e) { if (e.target === m) m.classList.add('hidden') })
+    })
+
+    // ── Boutons modifier ───────────────────────────────────────
+    document.querySelectorAll('.btn-edit-inline').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var modal = this.getAttribute('data-modal')
+        if (modal === 'prenom') {
+          document.getElementById('qm-prenom-val').value = profileData ? (profileData.prenom||'') : ''
+          openModal('qm-prenom')
+        } else if (modal === 'nom') {
+          document.getElementById('qm-nom-val').value = profileData ? (profileData.nom||'') : ''
+          openModal('qm-nom')
+        } else if (modal === 'phone') {
+          document.getElementById('qm-phone-val').value = profileData ? (profileData.telephone||'') : ''
+          openModal('qm-phone')
+        } else if (modal === 'tiktok') {
+          document.getElementById('qm-tiktok-val').value = profileData ? (profileData.tiktok || (appData ? appData.tiktok_url : '') || '') : ''
+          openModal('qm-tiktok')
+        } else if (modal === 'insta') {
+          document.getElementById('qm-insta-val').value = profileData ? (profileData.instagram||'') : ''
+          openModal('qm-insta')
+        } else if (modal === 'pay') {
+          var payModalData = piData ? {
+            methode: piData.methode,
+            iban: piData.iban,
+            titulaire: piData.titulaire,
+            paypal_email: piData.paypal_email
+          } : (appData ? {
+            methode: appData.paiement_methode,
+            iban: appData.paiement_iban,
+            titulaire: appData.paiement_titulaire,
+            paypal_email: appData.paiement_paypal_email
+          } : {})
+          document.getElementById('qm-pay-methode').value    = payModalData.methode || 'virement'
+          document.getElementById('qm-pay-iban').value       = payModalData.iban || ''
+          document.getElementById('qm-pay-titulaire').value  = payModalData.titulaire || ''
+          document.getElementById('qm-pay-paypal').value     = payModalData.paypal_email || ''
+          openModal('qm-pay')
+        }
+      })
+    })
+
+    // Annuler modals
+    ;['prenom','nom','phone','tiktok','insta','pay','ap','gains'].forEach(function(k) {
+      var el = document.getElementById('qm-' + k + '-cancel')
+      if (el) el.addEventListener('click', function() { closeModal('qm-' + k) })
+    })
+
+    // ── Sauvegarder champs profil ──────────────────────────────
+    async function saveProfile(updates) {
+      var res = await supabase.from('profiles').update(updates).eq('id', profileData.id)
+      if (res.error) throw res.error
+    }
+
+    document.getElementById('qm-prenom-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try { await saveProfile({ prenom: document.getElementById('qm-prenom-val').value.trim() }); toast.success('Prénom mis à jour !'); closeModal('qm-prenom'); await load() }
+      catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+    document.getElementById('qm-nom-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try { await saveProfile({ nom: document.getElementById('qm-nom-val').value.trim() }); toast.success('Nom mis à jour !'); closeModal('qm-nom'); await load() }
+      catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+    document.getElementById('qm-phone-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try { await saveProfile({ telephone: document.getElementById('qm-phone-val').value.trim() }); toast.success('Téléphone mis à jour !'); closeModal('qm-phone'); await load() }
+      catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+    document.getElementById('qm-tiktok-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try {
+        var newTikTok = document.getElementById('qm-tiktok-val').value.trim()
+        await saveProfile({ tiktok: newTikTok })
+        if (appData && appData.id) {
+          var appRes = await supabase.from('applications').update({ tiktok_url: newTikTok || null }).eq('id', appData.id)
+          if (appRes.error) throw appRes.error
+        }
+        toast.success('TikTok mis à jour !'); closeModal('qm-tiktok'); await load()
+      }
+      catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+    document.getElementById('qm-insta-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try { await saveProfile({ instagram: document.getElementById('qm-insta-val').value.trim() }); toast.success('Instagram mis à jour !'); closeModal('qm-insta'); await load() }
+      catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+
+    // ── Sauvegarder paiement ───────────────────────────────────
+    document.getElementById('qm-pay-save').addEventListener('click', async function() {
+      this.classList.add('btn--loading'); this.disabled = true
+      try {
+        var methode = document.getElementById('qm-pay-methode').value
+        var payload = {
+          ambassadrice_id: ambaId,
+          methode: methode,
+          iban: methode === 'virement' ? (document.getElementById('qm-pay-iban').value.trim().replace(/\s/g,'') || null) : null,
+          titulaire: methode === 'virement' ? (document.getElementById('qm-pay-titulaire').value.trim() || null) : null,
+          paypal_email: methode === 'paypal' ? (document.getElementById('qm-pay-paypal').value.trim() || null) : null,
+          bic: null
+        }
+
+        var res = await supabase
+          .from('payment_info')
+          .upsert(payload, { onConflict: 'ambassadrice_id' })
+          .select('methode,iban,bic,titulaire,paypal_email')
+          .maybeSingle()
+
+        if (res.error) throw res.error
+        if (res.data) piData = res.data
+
+        // On met aussi à jour applications pour garder le dossier candidature cohérent.
+        if (appData && appData.id) {
+          var appRes = await supabase
+            .from('applications')
+            .update({
+              paiement_methode: payload.methode,
+              paiement_paypal_email: payload.paypal_email,
+              paiement_titulaire: payload.titulaire,
+              paiement_iban: payload.iban
+            })
+            .eq('id', appData.id)
+
+          if (appRes.error) throw appRes.error
+        }
+        toast.success('Paiement mis à jour !'); closeModal('qm-pay'); await load()
+      } catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+
+    // ── Code affilié — enregistré dans affiliate_links.code ─────────
+    document.getElementById('btn-save-code').addEventListener('click', async function() {
+      var rawCode = document.getElementById('link-code').value.trim()
+      var code = rawCode.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+      if (!code) {
+        toast.error('Code affilié requis.')
+        return
+      }
+
+      if (rawCode !== code) {
+        document.getElementById('link-code').value = code
+      }
+
+      this.classList.add('btn--loading')
+      this.disabled = true
+
+      try {
+        var payload = { code: code }
+
+        /*
+          On ne modifie pas automatiquement url_complete si un lien libre existe déjà.
+          Si le lien complet est vide, on crée un lien simple avec le code.
+        */
+        if (!linkData || !linkData.url_complete) {
+          payload.url_complete = 'https://dabucci.com/' + code
+        }
+
+        var res = await supabase
+          .from('affiliate_links')
+          .update(payload)
+          .eq('ambassadrice_id', ambaId)
+          .select('id,code,url_complete,taux_commission')
+          .maybeSingle()
+
+        if (res.error) throw res.error
+        if (!res.data) throw new Error('Lien affilié introuvable pour cette ambassadrice.')
+
+        linkData = res.data
+        document.getElementById('link-code').value = linkData.code || ''
+        document.getElementById('link-full').value = linkData.url_complete || ''
+
+        toast.success('Code affilié mis à jour dans la BDD !')
+      } catch(e) {
+        toast.error(e.message)
+      }
+
+      this.classList.remove('btn--loading')
+      this.disabled = false
+    })
+
+    // ── Lien affilié — enregistré dans affiliate_links.url_complete ─────────
+    document.getElementById('btn-save-link').addEventListener('click', async function() {
+      var fullLink = document.getElementById('link-full').value.trim()
+
+      if (!fullLink) {
+        toast.error('Lien requis.')
+        return
+      }
+
+      this.classList.add('btn--loading')
+      this.disabled = true
+
+      try {
+        var res = await supabase
+          .from('affiliate_links')
+          .update({ url_complete: fullLink })
+          .eq('ambassadrice_id', ambaId)
+          .select('id,code,url_complete,taux_commission')
+          .maybeSingle()
+
+        if (res.error) throw res.error
+        if (!res.data) throw new Error('Lien affilié introuvable pour cette ambassadrice.')
+
+        linkData = res.data
+        document.getElementById('link-full').value = linkData.url_complete || ''
+
+        toast.success('Lien affilié mis à jour dans la BDD !')
+      } catch(e) {
+        toast.error(e.message)
+      }
+
+      this.classList.remove('btn--loading')
+      this.disabled = false
+    })
+
+    document.getElementById('btn-copy-link').addEventListener('click', async function() {
+      var link = document.getElementById('link-full').value.trim()
+      if (!link) { toast.error('Pas de lien.'); return }
+      try { await navigator.clipboard.writeText(link); toast.success('Lien copié !') }
+      catch { toast.error('Impossible de copier.') }
+    })
+
+    document.getElementById('btn-edit-taux').addEventListener('click', function() {
+      document.getElementById('taux-edit-wrap').style.display = 'flex'
+      this.style.display = 'none'
+    })
+    document.getElementById('btn-cancel-taux').addEventListener('click', function() {
+      document.getElementById('taux-edit-wrap').style.display = 'none'
+      document.getElementById('btn-edit-taux').style.display = ''
+    })
+
+    document.getElementById('btn-save-taux').addEventListener('click', async function() {
+      var taux = parseFloat(document.getElementById('taux-input').value)
+      if (!taux || taux <= 0 || taux > 100) { toast.error('Taux invalide (1-100).'); return }
+      this.classList.add('btn--loading'); this.disabled = true
+      try {
+        var res = await supabase.from('affiliate_links').update({ taux_commission: taux }).eq('id', linkData.id)
+        if (res.error) throw res.error
+        toast.success('Taux mis à jour !')
+        document.getElementById('taux-edit-wrap').style.display = 'none'
+        document.getElementById('btn-edit-taux').style.display = ''
+        await load()
+      } catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+
+    // ── Statut ─────────────────────────────────────────────────
+    document.getElementById('btn-toggle').addEventListener('click', async function() {
+      var n = ambaData.statut === 'active' ? 'suspendue' : 'active'
+      this.disabled = true
+      try {
+        var res = await supabase.from('ambassadrices').update({ statut: n }).eq('id', ambaId)
+        if (res.error) throw res.error; toast.success('Statut mis à jour.'); await load()
+      } catch(e) { toast.error('Erreur.') }
+      this.disabled = false
+    })
+
+    // ── Ajouter paiement ───────────────────────────────────────
+    document.getElementById('btn-add-pay').addEventListener('click', function() {
+      var t = new Date().toISOString().slice(0,10)
+      document.getElementById('qm-ap-date').value  = t
+      document.getElementById('qm-ap-debut').value = t
+      document.getElementById('qm-ap-fin').value   = t
+      document.getElementById('qm-ap-montant').value = ''
+      openModal('qm-addpay')
+    })
+    document.getElementById('qm-ap-cancel').addEventListener('click', function() { closeModal('qm-addpay') })
+    document.getElementById('qm-ap-save').addEventListener('click', async function() {
+      var montant = parseFloat(document.getElementById('qm-ap-montant').value)
+      var methode = document.getElementById('qm-ap-methode').value
+      var date    = document.getElementById('qm-ap-date').value
+      var debut   = document.getElementById('qm-ap-debut').value
+      var fin     = document.getElementById('qm-ap-fin').value
+      if (!montant || montant <= 0) { toast.error('Montant invalide.'); return }
+      this.classList.add('btn--loading'); this.disabled = true
+      try {
+        var res = await supabase.from('paiements').insert({ ambassadrice_id: ambaId, montant: montant, methode: methode, statut: 'a_venir', date_prevue: date, periode_debut: debut, periode_fin: fin })
+        if (res.error) throw res.error; toast.success('Paiement créé !'); closeModal('qm-addpay'); await loadPaiements(); await loadStats()
+      } catch(e) { toast.error(e.message) }
+      this.classList.remove('btn--loading'); this.disabled = false
+    })
+
+    // ── Modifier codes utilisés ───────────────────────────────
+    document.getElementById('btn-edit-codes').addEventListener('click', function() {
+      document.getElementById('qm-codes-val').value = document.getElementById('kpi-codes').textContent === '—' ? '' : document.getElementById('kpi-codes').textContent
+      openModal('qm-codes')
+    })
+    document.getElementById('qm-codes-cancel').addEventListener('click', function() { closeModal('qm-codes') })
+    document.getElementById('qm-codes-save').addEventListener('click', async function() {
+      var val = parseInt(document.getElementById('qm-codes-val').value)
+
+      if (isNaN(val) || val < 0) {
+        toast.error('Nombre invalide.')
+        return
+      }
+
+      this.classList.add('btn--loading')
+      this.disabled = true
+
+      try {
+        var res = await supabase
+          .from('ambassadrices')
+          .update({ codes_total_manual: val })
+          .eq('id', ambaId)
+
+        if (res.error) throw res.error
+
+        if (ambaData) ambaData.codes_total_manual = val
+        set('kpi-codes', String(val))
+
+        toast.success('Codes utilisés mis à jour dans la BDD !')
+        closeModal('qm-codes')
+      } catch(e) {
+        toast.error(e.message)
+      }
+
+      this.classList.remove('btn--loading')
+      this.disabled = false
+    })
+
+    // ── Modifier ventes validées ───────────────────────────────
+    document.getElementById('btn-add-commission').addEventListener('click', function() {
+      document.getElementById('qm-ventes-val').value = document.getElementById('kpi-ventes').textContent === '—' ? '' : document.getElementById('kpi-ventes').textContent
+      openModal('qm-commission')
+    })
+    document.getElementById('qm-commission-cancel').addEventListener('click', function() { closeModal('qm-commission') })
+    document.getElementById('qm-commission-save').addEventListener('click', async function() {
+      var val = parseInt(document.getElementById('qm-ventes-val').value)
+
+      if (isNaN(val) || val < 0) {
+        toast.error('Nombre invalide.')
+        return
+      }
+
+      this.classList.add('btn--loading')
+      this.disabled = true
+
+      try {
+        var res = await supabase
+          .from('ambassadrices')
+          .update({ ventes_total_manual: val })
+          .eq('id', ambaId)
+
+        if (res.error) throw res.error
+
+        if (ambaData) ambaData.ventes_total_manual = val
+        set('kpi-ventes', String(val))
+
+        toast.success('Ventes validées mises à jour dans la BDD !')
+        closeModal('qm-commission')
+      } catch(e) {
+        toast.error(e.message)
+      }
+
+      this.classList.remove('btn--loading')
+      this.disabled = false
+    })
+
+    // ── Note admin ─────────────────────────────────────────────
+    document.getElementById('btn-save-note').addEventListener('click', async function() {
+      var note = document.getElementById('admin-note').value.trim()
+      try {
+        var res = await supabase.from('ambassadrices').update({ notes_admin: note||null }).eq('id', ambaId)
+        if (res.error) throw res.error; if (ambaData) ambaData.notes_admin = note || null; toast.success('Note enregistrée.')
+      } catch(e) { toast.error('Erreur.') }
+    })
+
+    // ── Load principal ─────────────────────────────────────────
+    async function load() {
+      var res = await supabase
+        .from('ambassadrices')
+        .select('id,application_id,statut,activated_at,notes_admin,codes_total_manual,ventes_total_manual,profiles(id,nom,prenom,email,telephone,tiktok,instagram),applications(id,tiktok_url,paiement_methode,paiement_paypal_email,paiement_titulaire,paiement_iban),affiliate_links(id,code,url_complete,taux_commission),payment_info(methode,iban,bic,titulaire,paypal_email)')
+        .eq('id', ambaId)
+        .maybeSingle()
+
+      if (res.error || !res.data) { toast.error('Ambassadrice introuvable.'); return }
+
+      ambaData    = res.data
+      profileData = res.data.profiles
+      linkData    = res.data.affiliate_links
+      piData      = res.data.payment_info
+      appData     = res.data.applications
+
+      var name = ((profileData.prenom||'') + ' ' + (profileData.nom||'')).trim()
+      set('breadcrumb', name); set('hero-name', name)
+      set('hero-email', profileData.email)
+      document.getElementById('avatar').textContent = initials(profileData.nom, profileData.prenom)
+      set('i-prenom', profileData.prenom)
+      set('i-nom',    profileData.nom)
+      set('i-email',  profileData.email)
+      set('i-phone',  profileData.telephone)
+      set('i-tiktok', profileData.tiktok || (appData ? appData.tiktok_url : null))
+      set('i-insta',  profileData.instagram)
+      set('i-since',  formatDate(res.data.activated_at))
+      if (res.data.notes_admin) document.getElementById('admin-note').value = res.data.notes_admin
+
+      // Statut
+      var isActive = ambaData.statut === 'active'
+      document.getElementById('statut-badge').innerHTML = isActive
+        ? '<span class="badge badge--success">Active</span>'
+        : '<span class="badge badge--error">Suspendue</span>'
+      var btnT = document.getElementById('btn-toggle')
+      btnT.textContent   = isActive ? 'Suspendre' : 'Réactiver'
+      btnT.style.cssText = isActive ? 'color:var(--color-error);border-color:var(--color-error)' : 'color:var(--color-success);border-color:var(--color-success)'
+
+      // Lien affilié
+      if (linkData) {
+        document.getElementById('link-code').value = linkData.code || ''
+        document.getElementById('link-full').value = linkData.url_complete || (linkData.code ? 'https://dabucci.com/' + linkData.code : '')
+        document.getElementById('taux-badge').textContent = linkData.taux_commission + '%'
+        document.getElementById('taux-label').textContent = linkData.taux_commission + '%'
+        document.getElementById('taux-input').value       = linkData.taux_commission
+        document.getElementById('taux-edit-wrap').style.display = 'none'
+        document.getElementById('btn-edit-taux').style.display  = ''
+      }
+
+      // Paiement
+      // Priorité à payment_info. Si la candidature vient juste d'être acceptée et que payment_info
+      // n'a pas encore été créée, on affiche les infos stockées dans applications.
+      var paiementSource = piData ? {
+        methode: piData.methode,
+        iban: piData.iban,
+        titulaire: piData.titulaire,
+        paypal_email: piData.paypal_email
+      } : (appData ? {
+        methode: appData.paiement_methode,
+        iban: appData.paiement_iban,
+        titulaire: appData.paiement_titulaire,
+        paypal_email: appData.paiement_paypal_email
+      } : null)
+
+      if (paiementSource && paiementSource.methode) {
+        set('p-methode', paiementSource.methode === 'paypal' ? 'PayPal' : 'Virement bancaire')
+        set('p-iban', paiementSource.iban ? paiementSource.iban.replace(/(.{4})/g,'$1 ').trim() : null)
+        set('p-titulaire', paiementSource.titulaire)
+        set('p-paypal', paiementSource.paypal_email)
+      } else {
+        set('p-methode', null)
+        set('p-iban', null)
+        set('p-titulaire', null)
+        set('p-paypal', null)
+      }
+
+      await loadStats(); await loadGainsByMonth(); await loadPaiements(); await loadCommissions()
+    }
+
+    async function loadStats() {
+      // Paiements
+      var pays = await supabase.from('paiements').select('montant,statut,date_prevue').eq('ambassadrice_id',ambaId)
+      var tousLesPaies = pays.data || []
+      var payes  = tousLesPaies.filter(function(p){ return p.statut === 'paye' })
+      var aVenir = tousLesPaies.filter(function(p){ return p.statut === 'a_venir' }).sort(function(a,b){ return new Date(a.date_prevue)-new Date(b.date_prevue) })
+
+      var totalPaye = payes.reduce(function(s, p) {
+        return s + Number(p.montant || 0)
+      }, 0)
+
+      var totalAVenir = aVenir.reduce(function(s, p) {
+        return s + Number(p.montant || 0)
+      }, 0)
+
+      set('kpi-gains-total', formatEuro(totalPaye))
+      set('kpi-gains-avenir', formatEuro(totalAVenir))
+      set('kpi-nextpay', aVenir[0] ? formatDate(aVenir[0].date_prevue) : null)
+
+      // Si linkData pas encore chargé, le récupérer
+      if (!linkData) {
+        var lr = await supabase.from('affiliate_links').select('id,code,url_complete,taux_commission').eq('ambassadrice_id', ambaId).maybeSingle()
+        if (lr.data) linkData = lr.data
+      }
+
+      // Valeurs manuelles stockées directement en BDD dans ambassadrices.
+      set('kpi-codes', String(ambaData && ambaData.codes_total_manual ? ambaData.codes_total_manual : 0))
+      set('kpi-ventes', String(ambaData && ambaData.ventes_total_manual ? ambaData.ventes_total_manual : 0))
+    }
+
+    async function loadGainsByMonth() {
+      if (!linkData) return
+      var res = await supabase.from('commissions').select('montant_commission,created_at').eq('affiliate_link_id',linkData.id).eq('statut','validee').order('created_at',{ascending:false})
+      var byM = {}
+      ;(res.data||[]).forEach(function(c) {
+        var k = c.created_at.slice(0,7)
+        if (!byM[k]) byM[k] = {g:0,v:0}
+        byM[k].g += c.montant_commission; byM[k].v++
+      })
+      var el = document.getElementById('gains-months'); el.innerHTML = ''
+      var entries = Object.entries(byM).sort(function(a,b){ return b[0].localeCompare(a[0]) })
+      if (!entries.length) { el.innerHTML='<div style="text-align:center;color:var(--gray-400);font-size:var(--text-sm);padding:var(--space-8)">Aucune donnée</div>'; return }
+      entries.forEach(function(e) {
+        var row = document.createElement('div'); row.className='month-row'
+        row.innerHTML = '<span style="font-size:var(--text-sm);font-weight:500">'+formatMois(e[0]+'-01')+'</span><span style="display:flex;align-items:center;gap:var(--space-4)"><span style="font-size:var(--text-xs);color:var(--gray-400)">'+e[1].v+' vente'+(e[1].v>1?'s':'')+'</span><span style="font-size:var(--text-base);font-weight:700;color:var(--color-primary)">'+formatEuro(e[1].g)+'</span></span>'
+        el.appendChild(row)
+      })
+    }
+
+    async function loadPaiements() {
+      var res = await supabase.from('paiements').select('*').eq('ambassadrice_id',ambaId).order('date_prevue',{ascending:false})
+      var el = document.getElementById('pay-history'); el.innerHTML = ''
+      if (!res.data||!res.data.length) { el.innerHTML='<div style="text-align:center;color:var(--gray-400);font-size:var(--text-sm);padding:var(--space-8)">Aucun paiement</div>'; return }
+      res.data.forEach(function(p) {
+        var badge = p.statut==='paye' ? '<span class="badge badge--success" style="font-size:10px">Payé</span>' : '<span class="badge badge--warning" style="font-size:10px">À venir</span>'
+        var row = document.createElement('div'); row.className='pay-row'
+        row.innerHTML = '<span style="font-size:18px">'+(p.statut==='paye'?'✅':'🕐')+'</span><div style="flex:1"><div style="font-size:var(--text-sm);font-weight:500">'+formatDate(p.statut==='paye'?(p.date_effectuee||p.date_prevue):p.date_prevue)+'</div><div style="font-size:var(--text-xs);color:var(--gray-400)">'+(p.methode==='paypal'?'PayPal':'Virement')+(p.reference_virement?' · '+p.reference_virement:'')+'</div></div><div style="text-align:right"><div style="font-size:var(--text-base);font-weight:700">'+formatEuro(p.montant)+'</div><div style="margin-top:4px">'+badge+'</div></div>'
+        el.appendChild(row)
+      })
+    }
+
+    async function loadCommissions() {
+      if (!linkData) return
+      var res = await supabase.from('commissions').select('*').eq('affiliate_link_id',linkData.id).order('created_at',{ascending:false}).limit(20)
+      var tbody = document.getElementById('comm-tbody'); tbody.innerHTML = ''
+      if (!res.data||!res.data.length) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:var(--space-8)">Aucune commission</td></tr>'; return }
+      res.data.forEach(function(c) {
+        var badge = c.statut==='validee'?'<span class="badge badge--success">Validée</span>':c.statut==='en_attente'?'<span class="badge badge--warning">En attente</span>':'<span class="badge badge--error">Annulée</span>'
+        var tr = document.createElement('tr')
+        tr.innerHTML = '<td style="font-family:var(--font-mono);font-size:var(--text-xs)">'+c.order_ref+'</td><td>'+formatEuro(c.montant_vente)+'</td><td style="font-weight:700;color:var(--color-primary)">'+formatEuro(c.montant_commission)+'</td><td>'+badge+'</td><td style="white-space:nowrap;color:var(--gray-500)">'+formatDate(c.created_at)+'</td><td></td>'
+        if (c.statut==='en_attente') {
+          var btn=document.createElement('button'); btn.className='btn btn--primary btn--sm'; btn.textContent='Valider'
+          var cId=c.id
+          btn.addEventListener('click', async function() {
+            this.disabled=true
+            try { var r=await supabase.from('commissions').update({statut:'validee'}).eq('id',cId); if(r.error) throw r.error; toast.success('Commission validée !'); await loadStats(); await loadGainsByMonth(); await loadCommissions() }
+            catch(e){ toast.error('Erreur.') }
+            this.disabled=false
+          })
+          tr.querySelector('td:last-child').appendChild(btn)
+        } else tr.querySelector('td:last-child').textContent='—'
+        tbody.appendChild(tr)
+      })
+    }
+
+    await load()
+  }
+
+  init()
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DABUCCI — Más que una marca, una confianza.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/utils.css">
+  <style>
+    body{background:var(--white)}
+    .hero__brand{font-family:var(--font-heading);font-size:72px;letter-spacing:.12em;line-height:1;margin-bottom:var(--space-3)}
+    .hero__tagline{font-size:var(--text-sm);letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:var(--space-6)}
+    .hero__cta-group{display:flex;flex-direction:column;gap:var(--space-3);align-items:center}
+    .hero__btn-primary{background:var(--color-primary);color:var(--white);padding:var(--space-4) var(--space-10);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;letter-spacing:.06em;text-transform:uppercase;box-shadow:var(--shadow-pink);transition:all var(--transition-base);min-width:280px;text-align:center;display:inline-block}
+    .hero__btn-primary:hover{background:var(--pink-600);transform:translateY(-2px)}
+    .hero__btn-secondary{font-size:var(--text-sm);color:rgba(255,255,255,.75);text-decoration:underline;text-underline-offset:4px}
+    .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8);max-width:900px;margin:0 auto}
+    @media(max-width:640px){.how-grid{grid-template-columns:1fr}}
+    .how-card{text-align:center}
+    .how-card__num{width:36px;height:36px;border-radius:50%;background:var(--pink-50);color:var(--color-primary);font-size:var(--text-xs);font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-4)}
+    .how-card__img{width:100%;aspect-ratio:1;border-radius:var(--radius-xl);object-fit:cover;background:var(--pink-100);margin-bottom:var(--space-4)}
+    .how-card__title{font-family:var(--font-heading);font-size:var(--text-2xl);margin-bottom:var(--space-2)}
+    .how-card__desc{font-size:var(--text-sm);color:var(--gray-500);line-height:1.7}
+    .ava-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-5);max-width:1100px;margin:0 auto}
+    @media(max-width:768px){.ava-grid{grid-template-columns:repeat(2,1fr)}}
+    .ava-item{background:var(--white);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-xs)}
+    .ava-item__icon{font-size:28px;margin-bottom:var(--space-3)}
+    .ava-item__title{font-weight:600;font-size:var(--text-sm);margin-bottom:4px}
+    .ava-item__desc{font-size:var(--text-xs);color:var(--gray-500);line-height:1.6}
+    .cta-final{background:var(--white);padding:var(--space-20) var(--space-6);text-align:center}
+    .cta-final__title{font-family:var(--font-heading);font-size:var(--text-4xl);margin-bottom:var(--space-3)}
+    .cta-final__sub{color:var(--gray-500);font-size:var(--text-sm);margin-bottom:var(--space-8)}
+    .cta-final__btn{display:inline-block;background:var(--color-primary);color:var(--white);padding:var(--space-4) var(--space-12);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;box-shadow:var(--shadow-pink);transition:all var(--transition-base)}
+    .cta-final__btn:hover{background:var(--pink-600);transform:translateY(-2px)}
+    .cta-final__tagline{margin-top:var(--space-8);display:flex;justify-content:center;gap:var(--space-6);font-size:var(--text-xs);color:var(--gray-400)}
+    .footer{background:var(--gray-900);color:rgba(255,255,255,.55);text-align:center;padding:var(--space-8);font-size:var(--text-xs)}
+    .footer__brand{font-family:var(--font-heading);font-size:var(--text-2xl);color:var(--pink-300);letter-spacing:.1em;margin-bottom:var(--space-3)}
+    .navbar__logo{color:var(--white);transition:color var(--transition-fast)}
+    .navbar.scrolled .navbar__logo{color:var(--color-primary)}
+    .navbar__link{color:rgba(255,255,255,.9)}
+    .navbar.scrolled .navbar__link{color:var(--gray-700)}
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="/pages/landing.html" class="navbar__logo">DABUCCI</a>
+      <div class="navbar__links">
+        <a href="/pages/candidature.html" class="navbar__link">Convertirme en embajadora</a>
+        <a href="/dashboard/login.html"   class="navbar__link">Mi espacio</a>
+        <a href="/pages/candidature.html" class="navbar__cta navbar__link">Me uno →</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <img src="../assets/images/hero-bg.jpg" alt="DABUCCI" class="hero__bg"
+      onerror="this.parentElement.style.background='linear-gradient(135deg,#f4aecf,#d4537e,#8c2f50)'">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <div class="hero__brand">DABUCCI</div>
+      <div class="hero__tagline">Más que una marca, una confianza.</div>
+      <span style="display:block;color:var(--pink-200);font-size:var(--text-xl);margin-bottom:var(--space-6)">♡</span>
+      <p style="font-size:var(--text-sm);opacity:.85;margin-bottom:var(--space-8);line-height:1.8">Porque cada mujer merece<br>sentirse hermosa y segura.</p>
+      <div class="hero__cta-group">
+        <a href="/pages/candidature.html" class="hero__btn-primary">Me uno al programa</a>
+        <a href="#comment" class="hero__btn-secondary">Saber más</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pub-section" id="comment">
+    <h2 class="pub-section__title">¿Cómo funciona?</h2>
+    <div class="pub-section__heart">♡</div>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-card__num">01</div><img src="../assets/images/how-1.jpg" alt="Crea" class="how-card__img"><h3 class="how-card__title">Crea</h3><p class="how-card__desc">Crea contenido auténtico alrededor de DABUCCI.</p></div>
+      <div class="how-card"><div class="how-card__num">02</div><img src="../assets/images/how-2.jpg" alt="Gana" class="how-card__img"><h3 class="how-card__title">Gana</h3><p class="how-card__desc">Cada venta a través de tu enlace te genera una comisión.</p></div>
+      <div class="how-card"><div class="how-card__num">03</div><img src="../assets/images/how-3.jpg" alt="Evoluciona" class="how-card__img"><h3 class="how-card__title">Evoluciona</h3><p class="how-card__desc">Desarrolla tu audiencia y tus ingresos.</p></div>
+    </div>
+  </section>
+
+  <section class="pub-section pub-section--pink">
+    <h2 class="pub-section__title">Tus beneficios exclusivos</h2>
+    <div class="pub-section__heart">♡</div>
+    <div class="ava-grid">
+      <div class="ava-item"><div class="ava-item__icon">🎁</div><div class="ava-item__title">Productos gratis</div><div class="ava-item__desc">Recibe nuestros productos DABUCCI gratis.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">👑</div><div class="ava-item__title">Imagen de DABUCCI</div><div class="ava-item__desc">Destacada en nuestras redes y campañas.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">📈</div><div class="ava-item__title">Comisiones</div><div class="ava-item__desc">Gana un % por cada pedido a través de tu enlace.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">💎</div><div class="ava-item__title">Acceso VIP</div><div class="ava-item__desc">Acceso anticipado a nuestras nuevas colecciones.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">⭐</div><div class="ava-item__title">Coaching para creadoras</div><div class="ava-item__desc">Una coach dedicada para crear contenido viral.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">🚀</div><div class="ava-item__title">Visibilidad</div><div class="ava-item__desc">Tus contenidos pueden ser reposteados y patrocinados.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">👯</div><div class="ava-item__title">Comunidad</div><div class="ava-item__desc">Mujeres ambiciosas, creativas y solidarias.</div></div>
+      <div class="ava-item"><div class="ava-item__icon">🌟</div><div class="ava-item__title">Colaboraciones</div><div class="ava-item__desc">Oportunidades exclusivas con la marca.</div></div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <h2 class="cta-final__title">¿Lista para vivir la experiencia DABUCCI?</h2>
+    <p class="cta-final__sub">Únete a nuestro programa de embajadoras y comienza tu aventura.</p>
+    <a href="/pages/candidature.html" class="cta-final__btn">Me uno al programa →</a>
+    <div class="cta-final__tagline">
+      <span>♡ Feminidad</span><span>☆ Confianza</span><span>◇ Elegancia</span><span>↗ Ambición</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__brand">DABUCCI</div>
+    <p>© 2024 DABUCCI. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const n = document.getElementById('navbar')
+    window.addEventListener('scroll', () => n.classList.toggle('scrolled', scrollY > 60))
+  </script>
+</body>
+</html>

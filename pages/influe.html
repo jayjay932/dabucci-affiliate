@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok — Saisie Emails</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a; --surface: #141414; --surface2: #1c1c1c;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+  --text: #f0f0f0; --muted: #666; --muted2: #999;
+  --accent: #ff3c5f; --green: #00d68f; --orange: #ffa940; --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+
+header { padding: 2rem 2rem 1.5rem; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+.logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.logo span { background: linear-gradient(135deg, #ffa940, #ff3c5f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.logo small { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; font-family: 'DM Sans', sans-serif; -webkit-text-fill-color: var(--muted); }
+
+.header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.upload-label { display: flex; align-items: center; gap: 8px; background: var(--surface2); border: 1.5px dashed var(--border2); border-radius: var(--radius); padding: 9px 16px; cursor: pointer; font-size: 13px; color: var(--muted2); transition: all 0.2s; }
+.upload-label:hover { border-color: var(--orange); color: var(--text); }
+.upload-label input { display: none; }
+
+.btn { display: flex; align-items: center; gap: 7px; border: none; border-radius: var(--radius); padding: 9px 16px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.btn-all  { background: var(--surface2); color: var(--text); border: 0.5px solid var(--border2); }
+.btn-filled { background: var(--green); color: #000; }
+.btn-all:hover:not(:disabled) { border-color: var(--text); }
+.btn-filled:hover:not(:disabled) { opacity: 0.85; }
+
+.controls { padding: 1rem 2rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; border-bottom: 0.5px solid var(--border); }
+.controls select, .controls input[type=text] { background: var(--surface); border: 0.5px solid var(--border2); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 7px 12px; border-radius: 8px; outline: none; transition: border-color 0.2s; }
+.controls select:focus, .controls input:focus { border-color: var(--orange); }
+.controls input[type=text] { width: 200px; }
+
+.stats-row { display: flex; border-bottom: 0.5px solid var(--border); }
+.stat { flex: 1; padding: 1rem 1.5rem; border-right: 0.5px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat .v { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+.stat .v.green { color: var(--green); }
+.stat .l { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 3px; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { padding: 9px 12px; text-align: left; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 0.5px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; background: var(--bg); position: sticky; top: 0; }
+thead th:hover { color: var(--text); }
+thead th.no-sort { cursor: default; }
+tbody tr { border-bottom: 0.5px solid var(--border); transition: background 0.1s; }
+tbody tr:hover { background: var(--surface); }
+tbody tr.has-email { border-left: 2px solid var(--green); }
+tbody tr.no-email  { border-left: 2px solid var(--border2); }
+td { padding: 9px 12px; vertical-align: middle; }
+
+.name { font-weight: 500; font-size: 13px; white-space: nowrap; }
+.sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+.tiktok-link { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); text-decoration: none; font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: 6px; border: 0.5px solid rgba(255,60,95,0.3); background: rgba(255,60,95,0.07); transition: all 0.15s; white-space: nowrap; }
+.tiktok-link:hover { background: rgba(255,60,95,0.18); }
+
+.bio-text { max-width: 200px; font-size: 11px; color: var(--muted); white-space: pre-wrap; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; cursor: pointer; line-height: 1.5; }
+.bio-text.expanded { -webkit-line-clamp: unset; color: var(--muted2); }
+
+.email-input { background: var(--surface2); border: 0.5px solid var(--border2); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 10px; border-radius: 7px; outline: none; width: 210px; transition: border-color 0.2s; }
+.email-input:focus { border-color: var(--orange); }
+.email-input.filled { border-color: rgba(0,214,143,0.5); color: var(--green); }
+
+.empty   { text-align: center; padding: 4rem; color: var(--muted); font-size: 14px; }
+.loading { text-align: center; padding: 4rem; color: var(--muted); font-size: 14px; }
+
+footer { padding: 1rem 2rem; border-top: 0.5px solid var(--border); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--green); color: #000; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">✓ Export téléchargé !</div>
+
+<header>
+  <div class="logo">
+    <span>✏️ Saisie</span> Emails Influenceuses
+    <small>Profils sans email · Renseigne manuellement · Export CSV</small>
+  </div>
+  <div class="header-actions">
+    <label class="upload-label">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Charger CSV
+      <input type="file" id="csvFile" accept=".csv">
+    </label>
+    <button class="btn btn-all" id="btnExportAll" onclick="exportCSV('all')" disabled>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exporter tout
+    </button>
+    <button class="btn btn-filled" id="btnExportFilled" onclick="exportCSV('filled')" disabled>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      📧 Exporter avec email saisi
+    </button>
+  </div>
+</header>
+
+<div class="controls">
+  <select id="emailFilter">
+    <option value="all">Tous les profils</option>
+    <option value="filled">✅ Email saisi</option>
+    <option value="empty">⬜ Email vide</option>
+  </select>
+  <select id="followFilter">
+    <option value="all">Tous les followers</option>
+    <option value="5000-10000">5k – 10k</option>
+    <option value="10000-20000">10k – 20k</option>
+    <option value="20000-30000">20k – 30k</option>
+    <option value="30000-50000">30k – 50k</option>
+    <option value="50000-70000">50k – 70k</option>
+  </select>
+  <select id="ageFilter">
+    <option value="all">Tous les âges</option>
+    <option value="18">18 ans</option>
+    <option value="19">19 ans</option>
+    <option value="20">20 ans</option>
+    <option value="21">21 ans</option>
+    <option value="22">22 ans</option>
+    <option value="23">23 ans</option>
+    <option value="24">24 ans</option>
+  </select>
+  <select id="engageFilter">
+    <option value="all">Tout engagement</option>
+    <option value="5">Engagement > 5%</option>
+    <option value="10">Engagement > 10%</option>
+    <option value="15">Engagement > 15%</option>
+  </select>
+  <input type="text" id="searchInput" placeholder="🔍  Nom ou @username...">
+</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="v" id="statCount">—</div><div class="l">Profils affichés</div></div>
+  <div class="stat"><div class="v green" id="statFilled">—</div><div class="l">Emails saisis</div></div>
+  <div class="stat"><div class="v" id="statEmpty">—</div><div class="l">Emails manquants</div></div>
+  <div class="stat"><div class="v" id="statFollowers">—</div><div class="l">Moy. followers</div></div>
+  <div class="stat"><div class="v" id="statEngagement">—</div><div class="l">Moy. engagement</div></div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:36px" class="no-sort">#</th>
+        <th onclick="sortBy('nom')">Nom <span id="s-nom"></span></th>
+        <th onclick="sortBy('age')">Âge <span id="s-age"></span></th>
+        <th onclick="sortBy('username')">@Username <span id="s-username"></span></th>
+        <th class="no-sort">TikTok</th>
+        <th onclick="sortBy('tiktok_followers')">Followers <span id="s-tiktok_followers"></span></th>
+        <th onclick="sortBy('tiktok_engagement')">Engagement <span id="s-tiktok_engagement"></span></th>
+        <th onclick="sortBy('tiktok_avg_views')">Vues moy. <span id="s-tiktok_avg_views"></span></th>
+        <th class="no-sort">Bio</th>
+        <th class="no-sort" style="color:var(--orange)">✏️ Saisir Email</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <tr><td colspan="10" class="loading">⬆&nbsp; Charge ton fichier <strong>tiktok_sans_email_igc.csv</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <span id="footerLeft"></span>
+  <span id="footerRight" style="color:var(--green)"></span>
+</footer>
+
+<script>
+let allData = [];
+let emails = {};
+let sortCol = 'tiktok_followers';
+let sortAsc = false;
+
+function parseCSV(text) {
+  const lines = text.replace(/\r/g, '').trim().split('\n');
+  const headers = parseRow(lines[0]);
+  const result = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const vals = parseRow(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h.trim()] = (vals[idx] || '').trim(); });
+    result.push(obj);
+  }
+  return result;
+}
+
+function parseRow(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function fmt(n) {
+  n = parseInt(n) || 0;
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(1)+'k';
+  return n.toString();
+}
+
+function getFiltered() {
+  const ef = document.getElementById('emailFilter').value;
+  const fv = document.getElementById('followFilter').value;
+  const av = document.getElementById('ageFilter').value;
+  const ev = document.getElementById('engageFilter').value;
+  const sv = document.getElementById('searchInput').value.toLowerCase();
+
+  return allData.filter(row => {
+    const followers = parseInt(row.tiktok_followers) || 0;
+    const age = parseInt(row.age) || 0;
+    const eng = parseFloat(row.tiktok_engagement) || 0;
+    const emailSaisi = (emails[row.username] || '').trim();
+    const search = ((row.nom||'') + ' ' + (row.username||'')).toLowerCase();
+
+    if (ef === 'filled' && !emailSaisi) return false;
+    if (ef === 'empty' && emailSaisi) return false;
+    if (fv !== 'all') {
+      const [mn, mx] = fv.split('-').map(Number);
+      if (followers < mn || followers > mx) return false;
+    }
+    if (av !== 'all' && age !== parseInt(av)) return false;
+    if (ev !== 'all' && eng < parseFloat(ev)) return false;
+    if (sv && !search.includes(sv)) return false;
+    return true;
+  });
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = false; }
+  render();
+}
+
+function saveEmail(input) {
+  const username = input.getAttribute('data-username');
+  emails[username] = input.value.trim();
+  if (input.value.trim()) {
+    input.classList.add('filled');
+  } else {
+    input.classList.remove('filled');
+  }
+  updateStats();
+}
+
+function updateStats() {
+  const filtered = getFiltered();
+  const filled = filtered.filter(r => (emails[r.username] || '').trim()).length;
+  const empty = filtered.length - filled;
+  document.getElementById('statFilled').textContent = filled;
+  document.getElementById('statEmpty').textContent = empty;
+  document.getElementById('footerRight').textContent = filled + ' emails saisis sur ' + filtered.length + ' profils';
+
+  // Met à jour les classes des lignes
+  document.querySelectorAll('tbody tr[data-username]').forEach(tr => {
+    const u = tr.getAttribute('data-username');
+    if ((emails[u] || '').trim()) {
+      tr.classList.add('has-email');
+      tr.classList.remove('no-email');
+    } else {
+      tr.classList.add('no-email');
+      tr.classList.remove('has-email');
+    }
+  });
+}
+
+function render() {
+  const filtered = getFiltered();
+
+  filtered.sort((a, b) => {
+    let va = a[sortCol] || '', vb = b[sortCol] || '';
+    const na = parseFloat(va), nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
+    return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  const count = filtered.length;
+  const filled = filtered.filter(r => (emails[r.username] || '').trim()).length;
+  const avgF = count ? Math.round(filtered.reduce((s,r) => s+(parseInt(r.tiktok_followers)||0), 0)/count) : 0;
+  const avgE = count ? (filtered.reduce((s,r) => s+(parseFloat(r.tiktok_engagement)||0), 0)/count).toFixed(1) : 0;
+
+  document.getElementById('statCount').textContent = count.toLocaleString();
+  document.getElementById('statFilled').textContent = filled;
+  document.getElementById('statEmpty').textContent = count - filled;
+  document.getElementById('statFollowers').textContent = fmt(avgF);
+  document.getElementById('statEngagement').textContent = avgE + '%';
+
+  ['nom','age','username','tiktok_followers','tiktok_engagement','tiktok_avg_views'].forEach(c => {
+    const el = document.getElementById('s-'+c);
+    if (el) el.textContent = sortCol === c ? (sortAsc ? ' ↑' : ' ↓') : '';
+  });
+
+  const tbody = document.getElementById('tableBody');
+  if (!count) {
+    tbody.innerHTML = '<tr><td colspan="10" class="empty">Aucun résultat</td></tr>';
+    document.getElementById('footerLeft').textContent = '0 résultat';
+    document.getElementById('footerRight').textContent = '';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((row, i) => {
+    const username = row.username || '';
+    const tiktokUrl = row.tiktok_url || (username ? 'https://www.tiktok.com/@'+username : '');
+    const followers = parseInt(row.tiktok_followers) || 0;
+    const eng = parseFloat(row.tiktok_engagement) || 0;
+    const views = parseInt(row.tiktok_avg_views) || 0;
+    const engColor = eng >= 10 ? '#00d68f' : eng >= 5 ? '#ffa940' : '#888';
+    const prenom = (row.nom || username || '—').split(' ')[0];
+    const emailVal = emails[username] || '';
+    const rowClass = emailVal ? 'has-email' : 'no-email';
+    const bio = (row.bio_complete || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    return '<tr class="' + rowClass + '" data-username="' + username + '">' +
+      '<td style="color:var(--muted);font-size:12px">' + (i+1) + '</td>' +
+      '<td><div class="name">' + prenom + '</div><div class="sub">' + (row.nom||'') + '</div></td>' +
+      '<td style="color:var(--muted2);white-space:nowrap">' + (row.age||'—') + '</td>' +
+      '<td style="color:var(--muted2);white-space:nowrap">@' + (username||'—') + '</td>' +
+      '<td>' + (tiktokUrl ? '<a class="tiktok-link" href="'+tiktokUrl+'" target="_blank">↗ TikTok</a>' : '—') + '</td>' +
+      '<td style="font-weight:500;white-space:nowrap">' + fmt(followers) + '</td>' +
+      '<td style="color:'+engColor+';font-weight:500;white-space:nowrap">' + eng.toFixed(1) + '%</td>' +
+      '<td style="color:var(--muted2);white-space:nowrap">' + fmt(views) + '</td>' +
+      '<td><div class="bio-text" onclick="this.classList.toggle(\'expanded\')">' + (bio || '<span style="color:var(--muted);font-style:italic">—</span>') + '</div></td>' +
+      '<td><input class="email-input' + (emailVal ? ' filled' : '') + '" type="email" placeholder="email@exemple.com" value="' + emailVal + '" data-username="' + username + '" oninput="saveEmail(this)"></td>' +
+    '</tr>';
+  }).join('');
+
+  document.getElementById('footerLeft').textContent = count + ' profils affichés sur ' + allData.length + ' total';
+  document.getElementById('footerRight').textContent = filled + ' emails saisis';
+}
+
+function exportCSV(mode) {
+  const filtered = getFiltered();
+  const toExport = mode === 'filled'
+    ? filtered.filter(r => (emails[r.username] || '').trim())
+    : filtered;
+
+  const headers = ['username','nom','age','tiktok_followers','tiktok_engagement','tiktok_avg_views','tiktok_url','email','bio_complete'];
+  const rows = toExport.map(row => headers.map(h => {
+    let val = h === 'email' ? (emails[row.username] || '') : (row[h] || '');
+    return '"' + String(val).replace(/"/g,'""') + '"';
+  }));
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = mode === 'filled' ? 'emails_saisis_manuellement.csv' : 'tous_profils_avec_emails.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+document.getElementById('csvFile').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    allData = parseCSV(ev.target.result);
+    emails = {};
+    document.getElementById('btnExportAll').disabled = false;
+    document.getElementById('btnExportFilled').disabled = false;
+    document.getElementById('footerLeft').textContent = allData.length + ' profils chargés depuis ' + file.name;
+    render();
+  };
+  reader.readAsText(file, 'UTF-8');
+});
+
+['emailFilter','followFilter','ageFilter','engageFilter'].forEach(id => {
+  document.getElementById(id).addEventListener('change', render);
+});
+document.getElementById('searchInput').addEventListener('input', render);
+</script>
+</body>
+</html>

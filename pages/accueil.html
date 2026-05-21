@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DABUCCI — Programa de afiliación</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --pink:#df3f78;
+      --pink-soft:#ffa4c6;
+      --pink-light:#fff0f6;
+      --pink-pale:#fff7fb;
+      --plum:#4a1730;
+      --plum-soft:#74465a;
+      --white:#fff;
+      --black:#171015;
+      --muted:#8e7481;
+      --line:rgba(74,23,48,.10);
+      --glass:rgba(255,255,255,.18);
+      --shadow:0 30px 90px rgba(121,39,72,.18);
+      --shadow-soft:0 18px 48px rgba(121,39,72,.12);
+      --max-mobile:430px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      width:100%;
+      min-height:100%;
+      scroll-behavior:smooth;
+      background:#fff8fb;
+    }
+
+    body{
+      width:100%;
+      min-height:100%;
+      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 16% -4%, rgba(255,198,220,.72), transparent 30%),
+        radial-gradient(circle at 90% 4%, rgba(255,240,246,.94), transparent 34%),
+        linear-gradient(180deg,#fff 0%,#fff8fb 42%,#fff1f7 100%);
+      color:var(--white);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.16) 48%,rgba(255,247,251,.70)),
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,.96),transparent 56%);
+    }
+
+    .landing{
+      position:relative;
+      min-height:100svh;
+      width:100%;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      padding:0;
+    }
+
+    .phone-frame{
+      position:relative;
+      width:100%;
+      max-width:var(--max-mobile);
+      min-height:100svh;
+      overflow:hidden;
+      isolation:isolate;
+      background-image:url("./dabuccis.jpeg");
+      background-size:cover;
+      background-position:center top;
+      box-shadow:none;
+    }
+
+    .phone-frame::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% 8%, rgba(255,255,255,.25), transparent 32%),
+        linear-gradient(to bottom,
+          rgba(255,248,251,.32) 0%,
+          rgba(255,248,251,.08) 24%,
+          rgba(36,12,25,.06) 48%,
+          rgba(36,12,25,.43) 72%,
+          rgba(24,8,17,.76) 100%);
+    }
+
+    .phone-frame::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:58%;
+      z-index:0;
+      pointer-events:none;
+      background:
+        linear-gradient(to bottom, transparent 0%, rgba(20,7,14,.28) 26%, rgba(20,7,14,.84) 100%),
+        radial-gradient(circle at 50% 100%, rgba(223,63,120,.24), transparent 55%);
+    }
+
+    .top-brand{
+      position:relative;
+      z-index:2;
+      text-align:center;
+      padding:clamp(30px, 6.5svh, 62px) 22px 0;
+      color:var(--plum);
+    }
+
+    .top-heart{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px;
+      height:42px;
+      margin-bottom:18px;
+      border:1px solid rgba(223,63,120,.12);
+      border-radius:999px;
+      background:rgba(255,255,255,.54);
+      color:var(--pink);
+      font-size:0;
+      box-shadow:0 12px 30px rgba(121,39,72,.08), inset 0 1px 0 rgba(255,255,255,.9);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .top-heart::before{
+      content:"";
+      width:20px;
+      height:20px;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .top-logo{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      letter-spacing:.105em;
+      font-size:clamp(58px, 15.5vw, 96px);
+      line-height:.82;
+      text-transform:uppercase;
+      text-shadow:0 12px 38px rgba(255,255,255,.42);
+    }
+
+    .top-slogan{
+      display:inline-flex;
+      margin-top:22px;
+      padding:8px 13px;
+      border:1px solid rgba(74,23,48,.09);
+      border-radius:999px;
+      background:rgba(255,255,255,.52);
+      color:var(--plum-soft);
+      font-size:clamp(10px, 2.9vw, 13px);
+      letter-spacing:.16em;
+      font-weight:800;
+      text-transform:uppercase;
+      line-height:1.3;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.86);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .bottom-content{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:2;
+      padding:0 18px max(20px, env(safe-area-inset-bottom));
+      text-align:center;
+    }
+
+    .bottom-content::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:max(14px, env(safe-area-inset-bottom));
+      z-index:-1;
+      height:100%;
+      min-height:355px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:34px 34px 26px 26px;
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.11));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 24px 60px rgba(0,0,0,.16);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      pointer-events:none;
+    }
+
+    .script-title{
+      margin-bottom:8px;
+      color:var(--pink-soft);
+      font-family:"Parisienne", cursive;
+      font-size:clamp(40px, 11vw, 58px);
+      font-weight:400;
+      line-height:.92;
+      text-shadow:0 8px 28px rgba(0,0,0,.26);
+      transform:rotate(-1deg);
+      white-space:nowrap;
+    }
+
+    .main-logo{
+      margin-bottom:18px;
+      color:#fff;
+      font-family:"Cormorant Garamond", serif;
+      font-size:clamp(68px, 20vw, 112px);
+      font-weight:500;
+      letter-spacing:.09em;
+      line-height:.84;
+      text-transform:uppercase;
+      text-shadow:0 8px 34px rgba(0,0,0,.30);
+    }
+
+    .bottom-slogan{
+      max-width:320px;
+      margin:0 auto 16px;
+      color:rgba(255,255,255,.92);
+      font-size:clamp(12px, 3.5vw, 15px);
+      line-height:1.55;
+      font-weight:750;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      text-shadow:0 4px 18px rgba(0,0,0,.24);
+    }
+
+    .bottom-heart{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:34px;
+      height:34px;
+      margin-bottom:18px;
+      color:var(--pink-soft);
+      font-size:0;
+      filter:drop-shadow(0 8px 16px rgba(0,0,0,.24));
+    }
+
+    .bottom-heart::before{
+      content:"";
+      width:23px;
+      height:23px;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-4.35-9.15-9.1C1.15 8.15 3.45 4.75 7 4.75c2.04 0 3.45 1.13 4.12 2.15.22.34.34.55.34.55s.12-.21.34-.55C12.47 5.88 13.88 4.75 15.92 4.75c3.55 0 5.85 3.4 4.15 7.15C19 16.65 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-4.35-9.15-9.1C1.15 8.15 3.45 4.75 7 4.75c2.04 0 3.45 1.13 4.12 2.15.22.34.34.55.34.55s.12-.21.34-.55C12.47 5.88 13.88 4.75 15.92 4.75c3.55 0 5.85 3.4 4.15 7.15C19 16.65 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .cta,
+    .login-btn{
+      width:100%;
+      cursor:pointer;
+      border-radius:18px;
+      text-transform:uppercase;
+      transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), filter .2s var(--ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .cta{
+      min-height:58px;
+      border:1px solid rgba(255,255,255,.48);
+      background:linear-gradient(135deg,var(--pink),var(--pink-soft));
+      color:#fff;
+      font-size:clamp(12px, 3.3vw, 15px);
+      font-weight:900;
+      letter-spacing:.18em;
+      box-shadow:0 18px 40px rgba(223,63,120,.34), inset 0 1px 0 rgba(255,255,255,.20);
+    }
+
+    .cta:hover{
+      transform:translateY(-2px);
+      filter:saturate(1.05);
+      box-shadow:0 24px 52px rgba(223,63,120,.40), inset 0 1px 0 rgba(255,255,255,.22);
+    }
+
+    .cta:active{
+      transform:scale(.985);
+    }
+
+    .login-btn{
+      margin-top:11px;
+      min-height:52px;
+      border:1px solid rgba(255,255,255,.26);
+      background:rgba(255,255,255,.13);
+      color:#fff;
+      font-size:clamp(11px, 3vw, 13px);
+      font-weight:900;
+      letter-spacing:.17em;
+      box-shadow:0 14px 34px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .login-btn:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.22);
+      border-color:rgba(255,255,255,.48);
+    }
+
+    .login-btn:active{
+      transform:scale(.985);
+    }
+
+    .more-link{
+      margin-top:18px;
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      color:rgba(255,164,198,.94);
+      text-decoration:none;
+      font-size:clamp(10px, 2.7vw, 12px);
+      font-weight:900;
+      letter-spacing:.20em;
+      text-transform:uppercase;
+      text-shadow:0 4px 14px rgba(0,0,0,.18);
+    }
+
+    .more-link::after{
+      content:"";
+      width:58px;
+      height:1px;
+      border-radius:999px;
+      background:rgba(255,164,198,.72);
+      display:block;
+    }
+
+    .desktop-bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,.55), transparent 30%),
+        linear-gradient(135deg,#fff8fb,#ffd7e6 45%,#f3aac3);
+    }
+
+    .info-section{
+      display:none;
+      max-width:var(--max-mobile);
+      margin:0 auto;
+      padding:24px 14px 78px;
+      color:var(--black);
+      background:
+        radial-gradient(circle at 86% 0%,rgba(255,225,238,.88),transparent 34%),
+        linear-gradient(180deg,#fff,#fff7fb);
+    }
+
+    .info-section.is-open{
+      display:block;
+    }
+
+    .info-section h2{
+      margin:0 0 12px;
+      color:var(--plum);
+      font-family:"Cormorant Garamond", serif;
+      font-size:42px;
+      line-height:.95;
+      font-weight:600;
+      letter-spacing:-.04em;
+      text-align:left;
+    }
+
+    .info-section > p{
+      margin:0 0 16px;
+      color:var(--plum-soft);
+      font-size:14.5px;
+      line-height:1.68;
+      font-weight:560;
+      text-align:left;
+    }
+
+    .info-card{
+      position:relative;
+      overflow:hidden;
+      margin-top:16px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:27px;
+      background:rgba(255,255,255,.76);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(20px) saturate(150%);
+      -webkit-backdrop-filter:blur(20px) saturate(150%);
+    }
+
+    .info-card::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:18px;
+      width:40px;
+      height:4px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--pink),rgba(223,63,120,0));
+      opacity:.48;
+    }
+
+    .info-card p{
+      position:relative;
+      z-index:1;
+      margin:18px 0 0;
+      color:var(--plum-soft);
+      font-size:14px;
+      line-height:1.68;
+      font-weight:570;
+      text-align:left;
+    }
+
+    .info-card strong{
+      color:var(--pink);
+      font-weight:850;
+    }
+
+    .info-section .cta{
+      margin-top:20px!important;
+      color:#fff;
+    }
+
+    .info-section .login-btn{
+      margin-top:11px!important;
+      color:var(--pink)!important;
+      border-color:rgba(223,63,120,.13)!important;
+      background:rgba(255,255,255,.78)!important;
+      box-shadow:0 12px 26px rgba(121,39,72,.07)!important;
+    }
+
+    @media (min-width:700px){
+      .landing{
+        padding:24px 0;
+      }
+
+      .phone-frame{
+        min-height:min(100svh - 48px, 920px);
+        border:1px solid rgba(255,255,255,.55);
+        border-radius:36px;
+        box-shadow:0 32px 90px rgba(92,42,58,.26);
+      }
+
+      .phone-frame::before,
+      .phone-frame::after{
+        border-radius:36px;
+      }
+
+      .info-section{
+        margin-top:24px;
+        border-radius:36px 36px 0 0;
+        box-shadow:0 -18px 60px rgba(92,42,58,.10);
+      }
+    }
+
+    @media (max-width:390px){
+      .bottom-content{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+      .bottom-content::before{
+        left:14px;
+        right:14px;
+      }
+
+      .script-title{
+        font-size:38px;
+      }
+
+      .main-logo{
+        font-size:70px;
+      }
+
+      .bottom-slogan{
+        font-size:12px;
+      }
+
+      .cta{
+        min-height:56px;
+      }
+    }
+
+    @media (max-height:720px){
+      .top-brand{
+        padding-top:24px;
+      }
+
+      .top-heart{
+        margin-bottom:12px;
+        width:38px;
+        height:38px;
+      }
+
+      .top-slogan{
+        margin-top:16px;
+      }
+
+      .bottom-content{
+        padding-bottom:max(16px, env(safe-area-inset-bottom));
+      }
+
+      .bottom-content::before{
+        min-height:330px;
+      }
+
+      .main-logo{
+        margin-bottom:14px;
+      }
+
+      .bottom-slogan{
+        margin-bottom:10px;
+      }
+
+      .bottom-heart{
+        margin-bottom:12px;
+      }
+
+      .more-link{
+        margin-top:13px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+        animation:none!important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="desktop-bg"></div>
+
+  <section class="landing" id="top">
+    <div class="phone-frame">
+      <header class="top-brand" aria-label="DABUCCI">
+        <div class="top-heart">♡</div>
+        <div class="top-logo">DABUCCI</div>
+        <div class="top-slogan">Más que una marca, una confianza.</div>
+      </header>
+
+      <div class="bottom-content">
+        <div class="script-title">Únete al programa</div>
+        <div class="main-logo">DABUCCI</div>
+
+        <p class="bottom-slogan">
+          Porque cada mujer merece<br>
+          sentirse hermosa y segura.
+        </p>
+
+        <div class="bottom-heart">♡</div>
+
+        <button class="cta" id="join-btn" type="button">
+          Me uno al programa
+        </button>
+
+        <button class="login-btn" id="login-btn" type="button">
+          Iniciar sesión
+        </button>
+
+        <a href="#infos" class="more-link" id="more-link">Saber más</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section" id="infos">
+    <h2>Programa de embajadora</h2>
+    <p>
+      Únete al universo DABUCCI y comparte una marca pensada para realzar la confianza, la feminidad y la elegancia.
+    </p>
+    <div class="info-card">
+      <p>
+        Como embajadora, recibes tu <strong>enlace de afiliada</strong>, tu <strong>código personal</strong>
+        y beneficios exclusivos según tus resultados.
+      </p>
+    </div>
+    <button class="cta" id="join-btn-2" type="button" style="margin-top:24px">
+      Me uno al programa
+    </button>
+
+    <button class="login-btn" id="login-btn-2" type="button" style="color:#d94f82;border-color:rgba(236,79,134,.22);background:#fff5f8;box-shadow:none">
+      Iniciar sesión
+    </button>
+  </section>
+
+  <script>
+    const candidatureUrl = "./programme.html";
+    const dashboardUrl = "http://172.29.112.1:3000/dashboard/index.html";
+
+    function goToCandidature(){
+      window.location.href = candidatureUrl;
+    }
+
+    function goToDashboard(){
+      window.location.href = dashboardUrl;
+    }
+
+    document.getElementById("join-btn").addEventListener("click", goToCandidature);
+    document.getElementById("join-btn-2").addEventListener("click", goToCandidature);
+    document.getElementById("login-btn").addEventListener("click", goToDashboard);
+    document.getElementById("login-btn-2").addEventListener("click", goToDashboard);
+
+    document.getElementById("more-link").addEventListener("click", function(e){
+      e.preventDefault();
+      const infos = document.getElementById("infos");
+      infos.classList.add("is-open");
+      infos.scrollIntoView({ behavior:"smooth", block:"start" });
+    });
+  </script>
+</body>
+</html>

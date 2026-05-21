@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión — DABUCCI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/utils.css">
+  <style>
+    :root{
+      --login-white:#fff;
+      --login-cream:#fffafc;
+      --login-pink-25:#fff7fb;
+      --login-pink-50:#fff0f6;
+      --login-pink-100:#ffe1ee;
+      --login-pink-200:#ffc6dc;
+      --login-pink-300:#ffa4c6;
+      --login-pink-400:#f76b9d;
+      --login-pink-500:#df3f78;
+      --login-pink-600:#bd2f63;
+      --login-red:#c64258;
+      --login-red-soft:#fff0f2;
+      --login-plum:#4a1730;
+      --login-plum-soft:#74465a;
+      --login-text:#171015;
+      --login-muted:#8e7481;
+      --login-border:rgba(74,23,48,.09);
+      --login-border-strong:rgba(74,23,48,.14);
+      --login-shadow:0 24px 60px rgba(121,39,72,.105);
+      --login-shadow-soft:0 14px 34px rgba(121,39,72,.075);
+      --login-radius-xl:34px;
+      --login-radius-lg:27px;
+      --login-radius-md:21px;
+      --login-ease:cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{box-sizing:border-box}
+
+    html{
+      min-height:100%;
+      scroll-behavior:smooth;
+      background:var(--login-cream);
+    }
+
+    body{
+      min-height:100svh;
+      margin:0;
+      display:grid;
+      grid-template-columns:1fr;
+      color:var(--login-text);
+      background:
+        radial-gradient(circle at 14% -6%, rgba(255,198,220,.76), transparent 30%),
+        radial-gradient(circle at 88% 2%, rgba(255,240,246,.96), transparent 35%),
+        linear-gradient(180deg,#fff 0%,#fff8fb 38%,#fff1f7 100%);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.30) 48%,rgba(255,247,251,.72)),
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,.98),transparent 58%);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      left:50%;
+      top:78px;
+      z-index:-1;
+      width:360px;
+      height:360px;
+      border-radius:999px;
+      transform:translateX(-50%);
+      pointer-events:none;
+      background:rgba(255,164,198,.17);
+      filter:blur(62px);
+    }
+
+    .login-visual{
+      display:none;
+      position:relative;
+      overflow:hidden;
+      background:var(--login-pink-50);
+      isolation:isolate;
+    }
+
+    .login-visual__img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center top;
+      transform:scale(1.015);
+    }
+
+    .login-visual__overlay{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 35% 10%,rgba(255,255,255,.22),transparent 34%),
+        linear-gradient(180deg,rgba(255,240,246,.16),rgba(40,12,24,.28) 46%,rgba(22,6,14,.74));
+      pointer-events:none;
+    }
+
+    .login-visual__content{
+      position:absolute;
+      left:clamp(28px,4vw,64px);
+      right:clamp(28px,4vw,64px);
+      bottom:clamp(34px,6vw,72px);
+      color:#fff;
+      z-index:2;
+    }
+
+    .login-visual__brand{
+      margin-bottom:14px;
+      font-family:var(--font-heading);
+      font-size:clamp(62px,7vw,104px);
+      line-height:.82;
+      letter-spacing:.09em;
+      font-weight:600;
+      text-shadow:0 12px 38px rgba(0,0,0,.22);
+    }
+
+    .login-visual__content p{
+      display:inline-flex;
+      padding:9px 13px;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:999px;
+      background:rgba(255,255,255,.13);
+      color:rgba(255,255,255,.88)!important;
+      font-size:11px!important;
+      letter-spacing:.12em!important;
+      text-transform:uppercase;
+      font-weight:850;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.13);
+    }
+
+    .login-form-panel{
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px 14px;
+    }
+
+    .login-box{
+      position:relative;
+      overflow:hidden;
+      width:100%;
+      max-width:430px;
+      padding:24px 18px 22px;
+      border:1px solid var(--login-border);
+      border-radius:34px;
+      background:
+        radial-gradient(circle at 90% 0%,rgba(255,225,238,.86),transparent 34%),
+        linear-gradient(135deg,rgba(255,255,255,.90),rgba(255,248,251,.82));
+      box-shadow:var(--login-shadow);
+      backdrop-filter:blur(22px) saturate(150%);
+      -webkit-backdrop-filter:blur(22px) saturate(150%);
+    }
+
+    .login-box::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:18px;
+      width:40px;
+      height:4px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--login-pink-500),rgba(223,63,120,0));
+      opacity:.48;
+    }
+
+    .login-box::after{
+      content:"DABUCCI";
+      position:absolute;
+      right:-14px;
+      top:16px;
+      color:rgba(223,63,120,.055);
+      font-family:var(--font-heading);
+      font-size:58px;
+      line-height:.8;
+      letter-spacing:.08em;
+      font-weight:600;
+      pointer-events:none;
+      white-space:nowrap;
+    }
+
+    .login-brand-mobile{
+      position:relative;
+      z-index:1;
+      margin:20px 0 8px;
+      color:var(--login-plum);
+      font-family:var(--font-heading);
+      font-size:clamp(48px,14vw,68px);
+      line-height:.84;
+      letter-spacing:.105em;
+      text-align:center;
+      font-weight:600;
+    }
+
+    .login-box > div[style*="text-align:center;color:var(--color-primary)"]{
+      position:relative;
+      z-index:1;
+      width:42px;
+      height:42px;
+      margin:0 auto 20px!important;
+      border:1px solid rgba(223,63,120,.12);
+      border-radius:999px;
+      display:flex!important;
+      align-items:center;
+      justify-content:center;
+      color:var(--login-pink-500)!important;
+      font-size:0!important;
+      background:rgba(255,255,255,.68);
+      box-shadow:0 12px 30px rgba(121,39,72,.08), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    .login-box > div[style*="text-align:center;color:var(--color-primary)"]::before{
+      content:"";
+      width:20px;
+      height:20px;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .login-title{
+      position:relative;
+      z-index:1;
+      margin:0 0 8px;
+      color:var(--login-text);
+      font-family:var(--font-heading);
+      font-size:clamp(38px,10vw,54px);
+      line-height:.94;
+      letter-spacing:-.055em;
+      font-weight:600;
+      text-align:center;
+    }
+
+    .login-subtitle{
+      position:relative;
+      z-index:1;
+      max-width:310px;
+      margin:0 auto 24px;
+      color:var(--login-plum-soft);
+      font-size:14px;
+      line-height:1.6;
+      font-weight:570;
+      text-align:center;
+    }
+
+    .login-error{
+      position:relative;
+      z-index:1;
+      display:none;
+      align-items:center;
+      gap:10px;
+      margin-bottom:15px;
+      padding:13px 14px;
+      border:1px solid rgba(198,66,88,.13);
+      border-radius:18px;
+      background:rgba(255,240,242,.88);
+      color:var(--login-red);
+      box-shadow:0 10px 24px rgba(198,66,88,.06), inset 0 1px 0 rgba(255,255,255,.7);
+      font-size:13px;
+      line-height:1.45;
+      font-weight:750;
+    }
+
+    .login-error.show{display:flex}
+
+    .reset-modal{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(23,16,21,.42);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .reset-modal.show{
+      display:flex;
+    }
+
+    .reset-box{
+      width:min(100%,430px);
+      position:relative;
+      overflow:hidden;
+      padding:26px 18px 20px;
+      border:1px solid var(--login-border);
+      border-radius:30px;
+      background:
+        radial-gradient(circle at 90% 0%,rgba(255,225,238,.92),transparent 34%),
+        linear-gradient(135deg,rgba(255,255,255,.97),rgba(255,248,251,.94));
+      box-shadow:0 28px 80px rgba(28,13,21,.22);
+    }
+
+    .reset-box::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:18px;
+      width:40px;
+      height:4px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--login-pink-500),rgba(223,63,120,0));
+      opacity:.48;
+    }
+
+    .reset-title{
+      margin-top:14px;
+      color:var(--login-text);
+      font-family:var(--font-heading);
+      font-size:38px;
+      line-height:.96;
+      letter-spacing:-.05em;
+      font-weight:600;
+      text-align:center;
+    }
+
+    .reset-subtitle{
+      max-width:310px;
+      margin:8px auto 20px;
+      color:var(--login-plum-soft);
+      font-size:13.5px;
+      line-height:1.55;
+      font-weight:600;
+      text-align:center;
+    }
+
+    .reset-actions{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .reset-actions button{
+      flex:1;
+      min-height:50px;
+      border-radius:16px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:900;
+      border:1px solid transparent;
+    }
+
+    .reset-cancel{
+      color:var(--login-plum);
+      background:rgba(255,255,255,.76);
+      border-color:var(--login-border)!important;
+    }
+
+    .reset-confirm{
+      color:#fff;
+      background:linear-gradient(135deg,var(--login-pink-500),var(--login-pink-400));
+      box-shadow:0 14px 30px rgba(223,63,120,.22);
+    }
+
+    .reset-hint{
+      margin-top:10px;
+      color:var(--login-muted);
+      font-size:11px;
+      line-height:1.55;
+      text-align:center;
+      font-weight:650;
+    }
+
+    .login-error span:first-child{
+      width:28px;
+      height:28px;
+      min-width:28px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--login-red);
+      background:#fff;
+      font-size:0;
+      box-shadow:0 8px 16px rgba(198,66,88,.08);
+    }
+
+    .login-error span:first-child::before{
+      content:"";
+      width:15px;
+      height:15px;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z'/%3E%3Cpath d='M12 9v4'/%3E%3Cpath d='M12 17h.01'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z'/%3E%3Cpath d='M12 9v4'/%3E%3Cpath d='M12 17h.01'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .form-group{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+    }
+
+    .form-label{
+      color:var(--login-muted)!important;
+      font-size:10px!important;
+      font-weight:900!important;
+      letter-spacing:.075em!important;
+      text-transform:uppercase!important;
+    }
+
+    .input-icon-wrap,
+    .password-wrap{
+      position:relative;
+      width:100%;
+    }
+
+    .input-icon{
+      position:absolute;
+      left:15px;
+      top:50%;
+      z-index:2;
+      width:19px;
+      height:19px;
+      transform:translateY(-50%);
+      color:var(--login-pink-500);
+      font-size:0;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='4' width='20' height='16' rx='2'/%3E%3Cpath d='m22 7-10 7L2 7'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='4' width='20' height='16' rx='2'/%3E%3Cpath d='m22 7-10 7L2 7'/%3E%3C/svg%3E") center/contain no-repeat;
+      opacity:.88;
+    }
+
+    .form-input{
+      min-height:52px;
+      width:100%;
+      border:1px solid var(--login-border)!important;
+      border-radius:18px!important;
+      background:rgba(255,255,255,.82)!important;
+      color:var(--login-text)!important;
+      padding:0 15px!important;
+      font-size:15px!important;
+      font-weight:650!important;
+      outline:none!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 10px 22px rgba(121,39,72,.045);
+      transition:border-color .2s var(--login-ease), box-shadow .2s var(--login-ease), background .2s var(--login-ease);
+    }
+
+    .input-icon-wrap .form-input{
+      padding-left:45px!important;
+    }
+
+    .password-wrap .form-input{
+      padding-right:54px!important;
+    }
+
+    .form-input::placeholder{
+      color:rgba(142,116,129,.62);
+      font-weight:600;
+    }
+
+    .form-input:focus{
+      border-color:rgba(223,63,120,.34)!important;
+      background:#fff!important;
+      box-shadow:0 0 0 4px rgba(223,63,120,.10), inset 0 1px 0 rgba(255,255,255,.88);
+    }
+
+    .password-toggle{
+      position:absolute;
+      right:8px;
+      top:50%;
+      width:38px;
+      height:38px;
+      transform:translateY(-50%);
+      border:1px solid rgba(223,63,120,.10);
+      border-radius:999px;
+      background:linear-gradient(180deg,#fff,var(--login-pink-50));
+      color:var(--login-pink-600);
+      box-shadow:0 8px 18px rgba(121,39,72,.065), inset 0 1px 0 rgba(255,255,255,.9);
+      cursor:pointer;
+      font-size:0;
+      transition:transform .2s var(--login-ease), box-shadow .2s var(--login-ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .password-toggle::before{
+      content:"";
+      width:18px;
+      height:18px;
+      display:block;
+      margin:auto;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.85' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .password-toggle:hover{box-shadow:0 12px 24px rgba(121,39,72,.095)}
+    .password-toggle:active{transform:translateY(-50%) scale(.96)}
+
+    .login-forgot{
+      position:relative;
+      z-index:1;
+      margin-top:-3px!important;
+      text-align:right;
+    }
+
+    .login-forgot a{
+      color:var(--login-pink-600)!important;
+      font-size:12px!important;
+      font-weight:850;
+      text-decoration:none;
+    }
+
+    .login-forgot a:hover{text-decoration:underline}
+
+    .btn--primary,
+    #btn-login{
+      position:relative;
+      z-index:1;
+      min-height:54px!important;
+      margin-top:22px!important;
+      border:1px solid rgba(255,255,255,.50)!important;
+      border-radius:18px!important;
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      color:#fff!important;
+      background:linear-gradient(135deg,var(--login-pink-500),var(--login-pink-400))!important;
+      box-shadow:0 14px 30px rgba(223,63,120,.23), inset 0 1px 0 rgba(255,255,255,.20)!important;
+      cursor:pointer;
+      font-size:14px!important;
+      font-weight:900!important;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      transition:transform .2s var(--login-ease), box-shadow .2s var(--login-ease), filter .2s var(--login-ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    #btn-login:hover{
+      filter:saturate(1.05);
+      box-shadow:0 18px 36px rgba(223,63,120,.29), inset 0 1px 0 rgba(255,255,255,.22)!important;
+    }
+
+    #btn-login:active{transform:scale(.985)}
+
+    .login-box > div[style*="Pas encore ambassadrice"]{
+      position:relative;
+      z-index:1;
+      margin-top:20px!important;
+      padding:13px 14px;
+      border:1px solid var(--login-border);
+      border-radius:20px;
+      background:rgba(255,255,255,.58);
+      color:var(--login-plum-soft)!important;
+      font-size:13px!important;
+      line-height:1.45;
+      font-weight:650;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+    }
+
+    .login-box > div[style*="Pas encore ambassadrice"] a{
+      color:var(--login-pink-600)!important;
+      font-weight:900!important;
+      text-decoration:none;
+    }
+
+    .login-box > div[style*="Pas encore ambassadrice"] a:hover{text-decoration:underline}
+
+    .login-footer{
+      position:relative;
+      z-index:1;
+      margin-top:22px;
+      text-align:center;
+      color:var(--login-muted);
+      font-size:10px;
+      line-height:1.5;
+      font-weight:850;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+    }
+
+    @media(min-width:768px){
+      body{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .login-visual{
+        display:block;
+      }
+
+      .login-brand-mobile{
+        display:none;
+      }
+
+      .login-form-panel{
+        padding:36px;
+      }
+
+      .login-box{
+        padding:34px 30px 28px;
+        max-width:470px;
+        border-radius:38px;
+      }
+
+      .login-box::after{
+        font-size:76px;
+      }
+
+      .login-title{
+        margin-top:18px;
+        font-size:56px;
+      }
+
+      .login-subtitle{
+        font-size:15px;
+        margin-bottom:28px;
+      }
+    }
+
+    @media(min-width:1100px){
+      .login-form-panel{padding:54px}
+      .login-box{max-width:500px}
+    }
+
+    @media(max-width:380px){
+      .login-form-panel{
+        padding:16px 12px;
+      }
+
+      .login-box{
+        padding:22px 16px 20px;
+        border-radius:30px;
+      }
+
+      .login-brand-mobile{
+        font-size:46px;
+      }
+
+      .login-title{
+        font-size:37px;
+      }
+
+      .login-subtitle{
+        font-size:13.5px;
+      }
+
+      .form-input{
+        min-height:50px;
+      }
+
+      #btn-login{
+        min-height:52px!important;
+      }
+    }
+
+    @media(max-height:720px) and (max-width:767px){
+      .login-form-panel{
+        align-items:flex-start;
+        padding-top:16px;
+        padding-bottom:16px;
+      }
+
+      .login-brand-mobile{
+        font-size:42px;
+        margin-top:16px;
+      }
+
+      .login-box > div[style*="text-align:center;color:var(--color-primary)"]{
+        margin-bottom:14px!important;
+        width:38px;
+        height:38px;
+      }
+
+      .login-title{
+        font-size:35px;
+      }
+
+      .login-subtitle{
+        margin-bottom:18px;
+      }
+
+      .login-footer{
+        margin-top:16px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+        animation:none!important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-visual">
+    <img src="./dabucci.jpeg" alt="DABUCCI" class="login-visual__img" onerror="this.style.display='none'">
+    <div class="login-visual__overlay"></div>
+    <div class="login-visual__content">
+      <div class="login-visual__brand">DABUCCI</div>
+      <p style="font-size:var(--text-sm);letter-spacing:.12em;text-transform:uppercase;opacity:.85">Más que una marca, una confianza.</p>
+    </div>
+  </div>
+
+  <div class="login-form-panel">
+    <div class="login-box">
+      <div class="login-brand-mobile">DABUCCI</div>
+      <div style="text-align:center;color:var(--color-primary);font-size:var(--text-lg);margin-bottom:var(--space-6)">♡</div>
+      <h1 class="login-title">Bienvenida de nuevo</h1>
+      <p class="login-subtitle">Inicia sesión en tu espacio de embajadora.</p>
+
+      <div class="login-error" id="err-banner"><span>⚠</span><span id="err-msg">Email o contraseña incorrectos.</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-icon-wrap"><span class="input-icon">✉</span>
+            <input type="email" id="email" class="form-input" placeholder="tu@email.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <div class="password-wrap">
+            <input type="password" id="password" class="form-input" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="password-toggle" id="pwd-toggle">👁</button>
+          </div>
+        </div>
+        <div class="login-forgot"><a href="#" id="forgot-link">¿Olvidaste tu contraseña?</a></div>
+      </div>
+
+      <button class="btn btn--primary btn--full mt-6" id="btn-login">Iniciar sesión</button>
+
+      <div style="text-align:center;font-size:var(--text-sm);color:var(--gray-500);margin-top:var(--space-6)">
+        ¿Aún no eres embajadora? <a href="/pages/programme.html" style="color:var(--color-primary);font-weight:600">Postular</a>
+      </div>
+
+       <div style="text-align:center;font-size:var(--text-sm);color:var(--gray-500);margin-top:var(--space-6)">
+        ¿Admin? <a href="/admin/login.html" style="color:var(--color-primary);font-weight:600">ADMIN</a>
+      </div>
+
+      <div class="login-footer">♡ Feminidad · Confianza · Elegancia · Ambición</div>
+    </div>
+  </div>
+
+  <div class="reset-modal" id="reset-modal">
+    <div class="reset-box">
+      <h2 class="reset-title">Nueva contraseña</h2>
+      <p class="reset-subtitle">
+        Ingresa tu email y luego escribe dos veces tu nueva contraseña.
+      </p>
+
+      <div class="login-error" id="reset-error">
+        <span>⚠</span><span id="reset-error-msg">Error.</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-icon-wrap"><span class="input-icon">✉</span>
+            <input type="email" id="reset-email" class="form-input" placeholder="tu@email.com" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nueva contraseña</label>
+          <div class="password-wrap">
+            <input type="password" id="reset-password-1" class="form-input" placeholder="••••••••" autocomplete="new-password">
+            <button type="button" class="password-toggle" id="reset-toggle-1">👁</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirmar contraseña</label>
+          <div class="password-wrap">
+            <input type="password" id="reset-password-2" class="form-input" placeholder="••••••••" autocomplete="new-password">
+            <button type="button" class="password-toggle" id="reset-toggle-2">👁</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="reset-actions">
+        <button class="reset-cancel" id="reset-cancel" type="button">Cancelar</button>
+        <button class="reset-confirm" id="reset-confirm" type="button">Modificar</button>
+      </div>
+
+      <div class="reset-hint">
+        Después de validar, podrás iniciar sesión con tu nueva contraseña.
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module">
+    import { supabase }          from '../js/supabase.js'
+    import { redirectIfLoggedIn, signIn, goTo } from '../js/session.js'
+    import { toast } from '../js/toast.js'
+
+    // Rediriger si déjà connecté
+    await redirectIfLoggedIn()
+
+    const emailEl   = document.getElementById('email')
+    const passwordEl= document.getElementById('password')
+    const btnLogin  = document.getElementById('btn-login')
+    const errBanner = document.getElementById('err-banner')
+    const errMsg    = document.getElementById('err-msg')
+
+    function showErr(msg) {
+      errMsg.textContent = msg
+      errBanner.classList.add('show')
+    }
+    function hideErr() { errBanner.classList.remove('show') }
+
+    // Toggle password
+    document.getElementById('pwd-toggle').addEventListener('click', function() {
+      passwordEl.type = passwordEl.type === 'password' ? 'text' : 'password'
+      this.textContent = passwordEl.type === 'password' ? '👁' : '🙈'
+    })
+
+    // Login
+    async function doLogin() {
+      hideErr()
+      const email    = emailEl.value.trim()
+      const password = passwordEl.value
+      if (!email || !password) { showErr('Por favor, completa todos los campos.'); return }
+
+      btnLogin.classList.add('btn--loading'); btnLogin.disabled = true
+      try {
+        const { user } = await signIn(email, password)
+        // Récupérer le profil pour savoir où rediriger
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+        if (profile && ['admin', 'superadmin'].includes(profile.role)) {
+          goTo('/admin/dashboard.html')
+        } else {
+          goTo('/dashboard/index.html')
+        }
+      } catch(e) {
+        showErr('Email o contraseña incorrectos.')
+        btnLogin.classList.remove('btn--loading'); btnLogin.disabled = false
+      }
+    }
+
+    btnLogin.addEventListener('click', doLogin)
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() })
+
+    // Contraseña oublié : modification directe sans email
+    const resetModal = document.getElementById('reset-modal')
+    const resetEmail = document.getElementById('reset-email')
+    const resetPassword1 = document.getElementById('reset-password-1')
+    const resetPassword2 = document.getElementById('reset-password-2')
+    const resetError = document.getElementById('reset-error')
+    const resetErrorMsg = document.getElementById('reset-error-msg')
+    const resetConfirm = document.getElementById('reset-confirm')
+
+    function showResetErr(msg) {
+      resetErrorMsg.textContent = msg
+      resetError.classList.add('show')
+    }
+
+    function hideResetErr() {
+      resetError.classList.remove('show')
+    }
+
+    function openResetModal() {
+      hideErr()
+      hideResetErr()
+      resetEmail.value = emailEl.value.trim()
+      resetPassword1.value = ''
+      resetPassword2.value = ''
+      resetModal.classList.add('show')
+      setTimeout(() => {
+        if (resetEmail.value) resetPassword1.focus()
+        else resetEmail.focus()
+      }, 50)
+    }
+
+    function closeResetModal() {
+      resetModal.classList.remove('show')
+      hideResetErr()
+    }
+
+    function toggleResetPassword(input, btn) {
+      input.type = input.type === 'password' ? 'text' : 'password'
+      btn.textContent = input.type === 'password' ? '👁' : '🙈'
+    }
+
+    document.getElementById('forgot-link').addEventListener('click', e => {
+      e.preventDefault()
+      openResetModal()
+    })
+
+    document.getElementById('reset-cancel').addEventListener('click', closeResetModal)
+
+    resetModal.addEventListener('click', e => {
+      if (e.target === resetModal) closeResetModal()
+    })
+
+    document.getElementById('reset-toggle-1').addEventListener('click', function() {
+      toggleResetPassword(resetPassword1, this)
+    })
+
+    document.getElementById('reset-toggle-2').addEventListener('click', function() {
+      toggleResetPassword(resetPassword2, this)
+    })
+
+    resetConfirm.addEventListener('click', async function() {
+      hideResetErr()
+
+      const email = resetEmail.value.trim().toLowerCase()
+      const pass1 = resetPassword1.value
+      const pass2 = resetPassword2.value
+
+      if (!email) {
+        showResetErr('Por favor, ingresa tu email.')
+        return
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showResetErr('Email inválido.')
+        return
+      }
+
+      if (pass1.length < 8) {
+        showResetErr('La contraseña debe contener al menos 8 caracteres.')
+        return
+      }
+
+      if (pass1 !== pass2) {
+        showResetErr('Las dos contraseñas no coinciden.')
+        return
+      }
+
+      this.disabled = true
+      this.textContent = 'Modificando...'
+
+      try {
+        const { data, error } = await supabase.rpc('reset_password_direct', {
+          p_email: email,
+          p_new_password: pass1
+        })
+
+        if (error) throw error
+        if (data !== true) throw new Error('Cuenta no encontrada.')
+
+        toast.success('¡Contraseña modificada! Inicia sesión.')
+        emailEl.value = email
+        passwordEl.value = ''
+        closeResetModal()
+        passwordEl.focus()
+      } catch(e) {
+        showResetErr(e.message || 'No se pudo modificar la contraseña.')
+      }
+
+      this.disabled = false
+      this.textContent = 'Modificar'
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+-- Placeholder: schéma de base de données Supabase
+-- Aucun SQL détaillé ajouté par demande.

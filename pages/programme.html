@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DABUCCI — Programa de embajadora</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --pink:#df3f78;
+      --pink-dark:#bd2f63;
+      --pink-soft:#fff0f6;
+      --pink-pale:#fff7fb;
+      --pink-100:#ffe1ee;
+      --pink-200:#ffc6dc;
+      --pink-300:#ffa4c6;
+      --text:#171015;
+      --plum:#4a1730;
+      --plum-soft:#74465a;
+      --muted:#8e7481;
+      --line:rgba(74,23,48,.09);
+      --line-strong:rgba(74,23,48,.14);
+      --white:#fff;
+      --shadow:0 24px 60px rgba(121,39,72,.105);
+      --shadow-soft:0 14px 34px rgba(121,39,72,.075);
+      --radius-xl:34px;
+      --radius-lg:27px;
+      --radius-md:21px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{
+      min-height:100%;
+      scroll-behavior:smooth;
+      background:#fffafc;
+    }
+
+    body{
+      min-height:100%;
+      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 14% -6%, rgba(255,198,220,.76), transparent 30%),
+        radial-gradient(circle at 88% 2%, rgba(255,240,246,.96), transparent 35%),
+        linear-gradient(180deg,#fff 0%,#fff8fb 38%,#fff1f7 100%);
+      color:var(--text);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.30) 48%,rgba(255,247,251,.72)),
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,.98),transparent 58%);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      left:50%;
+      top:72px;
+      z-index:-1;
+      width:360px;
+      height:360px;
+      border-radius:999px;
+      transform:translateX(-50%);
+      pointer-events:none;
+      background:rgba(255,164,198,.17);
+      filter:blur(62px);
+    }
+
+    button{font-family:inherit}
+
+    .page{
+      min-height:100svh;
+      background:transparent;
+    }
+
+    .shell{
+      width:100%;
+      max-width:430px;
+      margin:0 auto;
+      min-height:100svh;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 85% 0%,rgba(255,225,238,.80),transparent 34%),
+        linear-gradient(180deg,#fff,#fff7fb 100%);
+      box-shadow:none;
+    }
+
+    .hero{
+      position:relative;
+      height:46svh;
+      min-height:345px;
+      overflow:hidden;
+      background:#f7dce7;
+      isolation:isolate;
+    }
+
+    .hero img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:64% top;
+      display:block;
+      transform:scale(1.01);
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:1;
+      background:
+        radial-gradient(circle at 12% 10%,rgba(255,255,255,.70),transparent 31%),
+        linear-gradient(90deg,rgba(255,250,252,.96) 0%,rgba(255,250,252,.62) 44%,rgba(255,250,252,.06) 100%),
+        linear-gradient(to bottom,rgba(255,255,255,.03) 38%,rgba(255,255,255,.88) 100%);
+      pointer-events:none;
+    }
+
+    .hero::after{
+      content:"DABUCCI";
+      position:absolute;
+      right:-18px;
+      bottom:22px;
+      z-index:1;
+      color:rgba(223,63,120,.070);
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(58px,20vw,120px);
+      font-weight:600;
+      letter-spacing:.08em;
+      line-height:.78;
+      white-space:nowrap;
+      pointer-events:none;
+    }
+
+    .hero-content{
+      position:absolute;
+      z-index:2;
+      inset:0;
+      padding:24px 18px 30px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:auto;
+      color:var(--plum);
+      font-family:"Cormorant Garamond",serif;
+      font-size:23px;
+      letter-spacing:.14em;
+      font-weight:600;
+      text-transform:uppercase;
+      text-shadow:0 12px 38px rgba(255,255,255,.45);
+    }
+
+    .brand::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--pink);
+      box-shadow:0 0 0 6px rgba(223,63,120,.10);
+    }
+
+    .headline{
+      max-width:295px;
+      margin-bottom:12px;
+      color:var(--text);
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(42px,11.5vw,57px);
+      line-height:.90;
+      font-weight:600;
+      letter-spacing:-.055em;
+    }
+
+    .headline .pink{
+      color:var(--pink-dark);
+    }
+
+    .hero-sub{
+      max-width:250px;
+      margin-bottom:14px;
+      color:var(--plum-soft);
+      font-size:14px;
+      line-height:1.55;
+      font-weight:590;
+    }
+
+    .community{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      max-width:100%;
+      padding:8px 11px;
+      border:1px solid rgba(74,23,48,.09);
+      border-radius:999px;
+      background:rgba(255,255,255,.62);
+      color:var(--plum-soft);
+      font-size:11px;
+      line-height:1.2;
+      font-weight:800;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 10px 24px rgba(121,39,72,.055);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .community span:first-child{
+      width:17px;
+      height:17px;
+      color:var(--pink);
+      font-size:0;
+      background:currentColor;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='black'%3E%3Cpath d='M12 21s-7.5-4.53-9.7-9.4C.55 7.74 2.9 4.25 6.52 4.25c2.08 0 3.52 1.16 4.2 2.2.22.34.34.55.34.55s.12-.21.34-.55c.68-1.04 2.12-2.2 4.2-2.2 3.62 0 5.97 3.49 4.22 7.35C19.5 16.47 12 21 12 21Z'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .content{
+      position:relative;
+      z-index:5;
+      margin-top:-30px;
+      padding:0 14px 34px;
+    }
+
+    .wizard-card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:
+        radial-gradient(circle at 88% 0%,rgba(255,225,238,.86),transparent 34%),
+        linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,248,251,.84));
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(22px) saturate(150%);
+      -webkit-backdrop-filter:blur(22px) saturate(150%);
+    }
+
+    .wizard-card::before{
+      content:"";
+      position:absolute;
+      left:18px;
+      top:18px;
+      width:40px;
+      height:4px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--pink),rgba(223,63,120,0));
+      opacity:.48;
+    }
+
+    .wizard-top{
+      position:relative;
+      z-index:1;
+      padding:22px 18px 0;
+    }
+
+    .progress{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-bottom:17px;
+    }
+
+    .progress button{
+      border:0;
+      height:7px;
+      border-radius:999px;
+      background:rgba(223,63,120,.13);
+      cursor:pointer;
+      transition:background .22s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .progress button.is-active{
+      background:linear-gradient(90deg,var(--pink),var(--pink-300));
+      box-shadow:0 8px 18px rgba(223,63,120,.18);
+    }
+
+    .progress button:hover{
+      transform:translateY(-1px);
+    }
+
+    .step-label{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .step-kicker{
+      color:var(--pink-dark);
+      font-size:10px;
+      line-height:1.2;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .step-counter{
+      padding:6px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.58);
+      color:var(--muted);
+      font-size:11px;
+      line-height:1;
+      font-weight:900;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.86);
+    }
+
+    .slide{
+      display:none;
+      min-height:390px;
+      padding:0 18px 20px;
+      animation:fadeUp .24s var(--ease) both;
+    }
+
+    .slide.is-active{display:block}
+
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .slide-title{
+      margin-bottom:9px;
+      color:var(--text);
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(34px,9.2vw,44px);
+      line-height:.96;
+      font-weight:600;
+      letter-spacing:-.05em;
+    }
+
+    .slide-text{
+      margin-bottom:17px;
+      color:var(--plum-soft);
+      font-size:13.5px;
+      line-height:1.65;
+      font-weight:570;
+    }
+
+    .mini-grid,.how-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .mini-card,.how-item,.condition-card{
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:23px;
+      background:rgba(255,255,255,.76);
+      box-shadow:0 13px 28px rgba(121,39,72,.060);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      transition:transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+    }
+
+    .mini-card::before,.how-item::before,.condition-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 16% 0%,rgba(255,225,238,.64),transparent 36%),
+        linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.40));
+      opacity:.82;
+      pointer-events:none;
+    }
+
+    .mini-card:hover,.how-item:hover,.condition-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(223,63,120,.18);
+      box-shadow:0 20px 44px rgba(121,39,72,.095);
+    }
+
+    .mini-icon,.condition-icon,.how-num{
+      position:relative;
+      z-index:1;
+      width:44px;
+      height:44px;
+      min-width:44px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,#fff,var(--pink-soft));
+      color:var(--pink);
+      border:1px solid rgba(223,63,120,.10);
+      box-shadow:0 12px 24px rgba(121,39,72,.075);
+      font-size:0;
+      font-weight:900;
+    }
+
+    .how-num{
+      border-radius:999px;
+      color:var(--pink-dark);
+      font-size:11px;
+      background:#fff;
+    }
+
+    .mini-icon::before,.condition-icon::before{
+      content:"";
+      width:21px;
+      height:21px;
+      background:currentColor;
+      -webkit-mask:center/contain no-repeat;
+      mask:center/contain no-repeat;
+    }
+
+    .mini-card:nth-child(1) .mini-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 12v10H4V12'/%3E%3Cpath d='M2 7h20v5H2z'/%3E%3Cpath d='M12 22V7'/%3E%3Cpath d='M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Z'/%3E%3Cpath d='M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 12v10H4V12'/%3E%3Cpath d='M2 7h20v5H2z'/%3E%3Cpath d='M12 22V7'/%3E%3Cpath d='M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Z'/%3E%3Cpath d='M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z'/%3E%3C/svg%3E")}
+    .mini-card:nth-child(2) .mini-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 7 5 5 5-9 5 9 5-5-2 13H4L2 7Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 7 5 5 5-9 5 9 5-5-2 13H4L2 7Z'/%3E%3C/svg%3E")}
+    .mini-card:nth-child(3) .mini-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='m19 9-5 5-4-4-3 3'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3v18h18'/%3E%3Cpath d='m19 9-5 5-4-4-3 3'/%3E%3C/svg%3E")}
+    .mini-card:nth-child(4) .mini-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 2 2.9 6.6L22 9.3l-5.4 4.8 1.6 6.9L12 17.4 5.8 21l1.6-6.9L2 9.3l7.1-.7L12 2Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 2 2.9 6.6L22 9.3l-5.4 4.8 1.6 6.9L12 17.4 5.8 21l1.6-6.9L2 9.3l7.1-.7L12 2Z'/%3E%3C/svg%3E")}
+
+    .condition-card:nth-child(1) .condition-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='m10 9 5 3-5 3V9Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='m10 9 5 3-5 3V9Z'/%3E%3C/svg%3E")}
+    .condition-card:nth-child(2) .condition-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E")}
+    .condition-card:nth-child(3) .condition-icon::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-4.35-9.15-9.1C1.15 8.15 3.45 4.75 7 4.75c2.04 0 3.45 1.13 4.12 2.15.22.34.34.55.34.55s.12-.21.34-.55C12.47 5.88 13.88 4.75 15.92 4.75c3.55 0 5.85 3.4 4.15 7.15C19 16.65 12 21 12 21Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-7-4.35-9.15-9.1C1.15 8.15 3.45 4.75 7 4.75c2.04 0 3.45 1.13 4.12 2.15.22.34.34.55.34.55s.12-.21.34-.55C12.47 5.88 13.88 4.75 15.92 4.75c3.55 0 5.85 3.4 4.15 7.15C19 16.65 12 21 12 21Z'/%3E%3C/svg%3E")}
+
+    .mini-card > div:last-child,
+    .how-item > div:last-child,
+    .condition-card > div:last-child{
+      position:relative;
+      z-index:1;
+      min-width:0;
+    }
+
+    .mini-card h3,.condition-card h3{
+      margin-bottom:5px;
+      color:var(--text);
+      font-size:14px;
+      line-height:1.22;
+      font-weight:900;
+      letter-spacing:-.025em;
+    }
+
+    .how-item h3{
+      margin-bottom:5px;
+      color:var(--text);
+      font-family:"Cormorant Garamond",serif;
+      font-size:25px;
+      line-height:.95;
+      font-weight:600;
+      letter-spacing:-.04em;
+    }
+
+    .mini-card p,.condition-card p,.how-item p{
+      color:var(--plum-soft);
+      font-size:12.5px;
+      line-height:1.52;
+      font-weight:570;
+    }
+
+    .nav-actions{
+      position:relative;
+      z-index:1;
+      display:flex;
+      gap:10px;
+      padding:0 18px 18px;
+    }
+
+    .btn{
+      height:54px;
+      border:0;
+      border-radius:18px;
+      padding:0 18px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:900;
+      transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), filter .2s var(--ease);
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .btn-secondary{
+      width:58px;
+      min-width:58px;
+      border:1px solid rgba(223,63,120,.12);
+      color:var(--pink-dark);
+      background:linear-gradient(180deg,#fff,var(--pink-soft));
+      box-shadow:0 12px 24px rgba(121,39,72,.075), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    .btn-primary{
+      flex:1;
+      border:1px solid rgba(255,255,255,.50);
+      color:#fff;
+      background:linear-gradient(135deg,var(--pink),var(--pink-300));
+      box-shadow:0 14px 30px rgba(223,63,120,.23), inset 0 1px 0 rgba(255,255,255,.20);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      letter-spacing:.015em;
+    }
+
+    .btn-primary:hover{
+      filter:saturate(1.05);
+      transform:translateY(-2px);
+      box-shadow:0 18px 36px rgba(223,63,120,.29), inset 0 1px 0 rgba(255,255,255,.22);
+    }
+
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 30px rgba(121,39,72,.10), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    .btn:active{transform:scale(.985)}
+
+    .fixed-cta{
+      position:fixed;
+      left:50%;
+      bottom:max(12px,env(safe-area-inset-bottom));
+      transform:translateX(-50%);
+      width:min(394px, calc(100vw - 28px));
+      z-index:30;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px;
+      border:1px solid rgba(74,23,48,.10);
+      border-radius:26px;
+      background:rgba(255,255,255,.84);
+      box-shadow:0 24px 70px rgba(74,23,48,.15), inset 0 1px 0 rgba(255,255,255,.9);
+      backdrop-filter:blur(28px) saturate(170%);
+      -webkit-backdrop-filter:blur(28px) saturate(170%);
+    }
+
+    .fixed-cta-text{flex:1;padding-left:8px}
+    .fixed-cta-text strong{
+      display:block;
+      color:var(--text);
+      font-size:13px;
+      line-height:1.25;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .fixed-cta-text span{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:650;
+    }
+
+    .fixed-cta button{
+      min-width:134px;
+      height:48px;
+      border:1px solid rgba(255,255,255,.50);
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--pink),var(--pink-300));
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+      padding:0 16px;
+      box-shadow:0 12px 26px rgba(223,63,120,.20);
+    }
+
+    @media (min-width:760px){
+      .page{
+        padding:28px 20px;
+      }
+
+      .shell{
+        max-width:1040px;
+        min-height:auto;
+        margin:0 auto;
+        border:1px solid rgba(255,255,255,.72);
+        border-radius:38px;
+        overflow:hidden;
+        box-shadow:0 34px 96px rgba(92,42,58,.20);
+      }
+
+      .hero{
+        height:460px;
+        min-height:460px;
+        border-radius:38px 38px 0 0;
+      }
+
+      .hero img{object-position:center top}
+
+      .hero::before{
+        background:
+          radial-gradient(circle at 12% 10%,rgba(255,255,255,.76),transparent 31%),
+          linear-gradient(90deg,rgba(255,250,252,.96) 0%,rgba(255,250,252,.68) 34%,rgba(255,250,252,.02) 72%);
+      }
+
+      .hero-content{padding:42px}
+      .brand{font-size:30px}
+      .headline{font-size:62px;max-width:460px}
+      .hero-sub{font-size:16.5px;max-width:330px}
+      .community{font-size:12px}
+
+      .content{
+        margin-top:-40px;
+        padding:0 42px 54px;
+      }
+
+      .wizard-card{border-radius:36px}
+      .wizard-card::before{left:24px;top:24px}
+      .wizard-top{padding:28px 24px 0}
+      .slide{
+        min-height:338px;
+        padding:0 24px 24px;
+      }
+
+      .slide-title{font-size:45px}
+      .slide-text{font-size:15px;max-width:680px}
+      .mini-grid{grid-template-columns:repeat(2,1fr);gap:13px}
+      .how-list{grid-template-columns:repeat(3,1fr);gap:13px}
+      .how-item{display:block;padding:18px}
+      .how-num{margin-bottom:16px}
+      .conditions-compact{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+      .condition-card{margin:0;display:block;padding:18px}
+      .condition-icon{margin-bottom:16px}
+      .nav-actions{padding:0 24px 24px}
+      .fixed-cta{display:none}
+    }
+
+    @media (max-width:390px){
+      .hero-content{padding-left:16px;padding-right:16px}
+      .headline{font-size:39px;max-width:270px}
+      .hero-sub{font-size:13.5px;max-width:235px}
+      .content{padding-left:12px;padding-right:12px}
+      .wizard-card{border-radius:30px}
+      .slide{padding-left:16px;padding-right:16px}
+      .slide-title{font-size:33px}
+      .mini-card,.how-item,.condition-card{padding:13px;border-radius:21px}
+      .nav-actions{padding-left:16px;padding-right:16px}
+    }
+
+    @media (max-height:720px) and (max-width:759px){
+      .hero{
+        height:43svh;
+        min-height:318px;
+      }
+
+      .hero-content{padding-top:20px}
+      .headline{font-size:38px}
+      .content{margin-top:-28px}
+      .slide{min-height:360px}
+      .mini-card,.how-item,.condition-card{padding:12px}
+      .btn{height:52px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        scroll-behavior:auto!important;
+        transition:none!important;
+        animation:none!important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="shell">
+      <section class="hero">
+        <img src="./dabuccis.jpeg" alt="Programa de embajadora DABUCCI">
+        <div class="hero-content">
+          <div class="brand">DABUCCI</div>
+
+          <h1 class="headline">
+            Conviértete<br>
+            <span class="pink">en embajadora.</span><br>
+            <span class="pink">Gana. Brilla.</span>
+          </h1>
+
+          <p class="hero-sub">
+            Únete a nuestro programa y vive la experiencia DABUCCI.
+          </p>
+
+          <div class="community">
+            <span>♡</span>
+            <span>Una comunidad de mujeres seguras</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="wizard-card">
+          <div class="wizard-top">
+            <div class="progress" aria-label="Étapes">
+              <button class="progress-dot is-active" data-step="0" type="button"></button>
+              <button class="progress-dot" data-step="1" type="button"></button>
+              <button class="progress-dot" data-step="2" type="button"></button>
+            </div>
+
+            <div class="step-label">
+              <div class="step-kicker" id="step-kicker">Paso 1 · Programa</div>
+              <div class="step-counter" id="step-counter">1/3</div>
+            </div>
+          </div>
+
+          <article class="slide is-active" data-slide="0">
+            <h2 class="slide-title">¿Cómo funciona?</h2>
+            <p class="slide-text">Un recorrido simple: crea contenido, comparte tu enlace y gana con cada venta generada.</p>
+
+            <div class="how-list">
+              <div class="how-item"><div class="how-num">01</div><div><h3>Crea</h3><p>Publica contenido auténtico alrededor de DABUCCI.</p></div></div>
+              <div class="how-item"><div class="how-num">02</div><div><h3>Gana</h3><p>Cada venta realizada gracias a tu enlace te genera una comisión de hasta el 30%.</p></div></div>
+              <div class="how-item"><div class="how-num">03</div><div><h3>Evoluciona</h3><p>Desarrolla tu audiencia, tus ingresos y tus oportunidades.</p></div></div>
+            </div>
+          </article>
+
+          <article class="slide" data-slide="1">
+            <h2 class="slide-title">Tus beneficios exclusivos</h2>
+            <p class="slide-text">El programa acompaña a creadoras motivadas y ayuda a aumentar su visibilidad.</p>
+
+            <div class="mini-grid">
+              <div class="mini-card"><div class="mini-icon">🎁</div><div><h3>Productos gratis</h3><p>Recibe nuestras novedades y productos DABUCCI.</p></div></div>
+              <div class="mini-card"><div class="mini-icon">♕</div><div><h3>Imagen de marca</h3><p>Aparece destacada en nuestras redes y campañas.</p></div></div>
+              <div class="mini-card"><div class="mini-icon">↗</div><div><h3>Comisiones</h3><p>Gana un porcentaje de hasta el 30% por cada pedido validado.</p></div></div>
+              <div class="mini-card"><div class="mini-icon">☆</div><div><h3>Oportunidades VIP</h3><p>Accede a colaboraciones y ofertas exclusivas.</p></div></div>
+            </div>
+          </article>
+
+          <article class="slide" data-slide="2">
+            <h2 class="slide-title">Condiciones para unirte</h2>
+            <p class="slide-text">Algunos compromisos simples para construir una colaboración sana y eficaz.</p>
+
+            <div class="conditions-compact">
+              <div class="condition-card"><div class="condition-icon">▭</div><div><h3>1 video por semana</h3><p>Publica al menos un video DABUCCI en TikTok o Instagram.</p></div></div>
+              <div class="condition-card"><div class="condition-icon">🔗</div><div><h3>Enlace en tu bio</h3><p>Añade tu enlace de afiliada para facilitar los pedidos.</p></div></div>
+              <div class="condition-card"><div class="condition-icon">♡</div><div><h3>Autenticidad</h3><p>Crea contenido natural, elegante y fiel a tu imagen.</p></div></div>
+            </div>
+          </article>
+
+          <div class="nav-actions">
+            <button class="btn btn-secondary" id="prev-btn" type="button">←</button>
+            <button class="btn btn-primary" id="next-btn" type="button"><span>Continuar</span><span>→</span></button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+   
+  </main>
+
+  <script>
+    const candidatureUrl = "./candidature.html";
+
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const dots = Array.from(document.querySelectorAll(".progress-dot"));
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const fixedJoin = document.getElementById("fixed-join");
+    const stepKicker = document.getElementById("step-kicker");
+    const stepCounter = document.getElementById("step-counter");
+
+    const labels = ["Paso 1 · Programa", "Paso 2 · Beneficios", "Paso 3 · Condiciones"];
+    let currentStep = 0;
+
+    function goToCandidature(){
+      window.location.href = candidatureUrl;
+    }
+
+    function renderStep(){
+      slides.forEach(function(slide, index){
+        slide.classList.toggle("is-active", index === currentStep);
+      });
+
+      dots.forEach(function(dot, index){
+        dot.classList.toggle("is-active", index === currentStep);
+      });
+
+      stepKicker.textContent = labels[currentStep];
+      stepCounter.textContent = (currentStep + 1) + "/3";
+      prevBtn.style.visibility = currentStep === 0 ? "hidden" : "visible";
+
+      if(currentStep === slides.length - 1){
+        nextBtn.innerHTML = "<span>Me uno al programa</span><span>→</span>";
+      } else {
+        nextBtn.innerHTML = "<span>Continuar</span><span>→</span>";
+      }
+    }
+
+    dots.forEach(function(dot){
+      dot.addEventListener("click", function(){
+        currentStep = Number(dot.dataset.step);
+        renderStep();
+      });
+    });
+
+    prevBtn.addEventListener("click", function(){
+      if(currentStep > 0){
+        currentStep -= 1;
+        renderStep();
+      }
+    });
+
+    nextBtn.addEventListener("click", function(){
+      if(currentStep === slides.length - 1){
+        goToCandidature();
+      } else {
+        currentStep += 1;
+        renderStep();
+      }
+    });
+
+    fixedJoin.addEventListener("click", goToCandidature);
+
+    let touchStartX = 0;
+
+    document.querySelector(".wizard-card").addEventListener("touchstart", function(e){
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive:true });
+
+    document.querySelector(".wizard-card").addEventListener("touchend", function(e){
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if(Math.abs(diff) < 50) return;
+
+      if(diff > 0 && currentStep < slides.length - 1){
+        currentStep += 1;
+        renderStep();
+      }
+
+      if(diff < 0 && currentStep > 0){
+        currentStep -= 1;
+        renderStep();
+      }
+    }, { passive:true });
+
+    renderStep();
+  </script>
+</body>
+</html>

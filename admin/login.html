@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — DABUCCI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/utils.css">
+  <style>
+    body{min-height:100svh;display:grid;grid-template-columns:1fr;background:var(--white)}
+    @media(min-width:768px){body{grid-template-columns:1fr 1fr}}
+    .login-visual{display:none;position:relative;overflow:hidden;background:var(--pink-50)}
+    @media(min-width:768px){.login-visual{display:block}}
+    .login-visual__img{width:100%;height:100%;object-fit:cover;object-position:center top}
+    .login-visual__overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(212,83,126,.15),rgba(0,0,0,.45))}
+    .login-visual__content{position:absolute;bottom:var(--space-12);left:var(--space-8);right:var(--space-8);color:var(--white)}
+    .login-visual__brand{font-family:var(--font-heading);font-size:var(--text-5xl);letter-spacing:.08em;line-height:1;margin-bottom:var(--space-3)}
+    .login-brand-mobile{font-family:var(--font-heading);font-size:var(--text-4xl);color:var(--color-primary);letter-spacing:.08em;text-align:center;margin-bottom:var(--space-2)}
+    @media(min-width:768px){.login-brand-mobile{display:none}}
+    .login-title{font-family:var(--font-heading);font-size:var(--text-3xl);margin-bottom:var(--space-2)}
+    .login-subtitle{font-size:var(--text-sm);color:var(--gray-500);margin-bottom:var(--space-8)}
+    .login-error{display:none;background:var(--color-error-bg);color:var(--color-error);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-size:var(--text-sm);margin-bottom:var(--space-4)}
+    .login-error.show{display:flex;align-items:center;gap:var(--space-2)}
+    .login-footer{margin-top:var(--space-10);text-align:center;font-size:var(--text-xs);color:var(--gray-400)}
+  </style>
+</head>
+<body>
+  <div class="login-visual">
+    <img src="../assets/images/hero-bg.jpg" alt="DABUCCI" class="login-visual__img" onerror="this.style.display='none'">
+    <div class="login-visual__overlay"></div>
+    <div class="login-visual__content">
+      <div class="login-visual__brand">DABUCCI</div>
+      <p style="font-size:var(--text-sm);letter-spacing:.12em;text-transform:uppercase;opacity:.85">Espace administrateur</p>
+    </div>
+  </div>
+
+  <div class="login-form-panel">
+    <div class="login-box">
+      <div class="login-brand-mobile">DABUCCI</div>
+      <div style="text-align:center;color:var(--color-primary);font-size:var(--text-lg);margin-bottom:var(--space-6)">⚙</div>
+      <h1 class="login-title">Administration</h1>
+      <p class="login-subtitle">Connectez-vous à l'espace administrateur.</p>
+
+      <div class="login-error" id="err-banner"><span>⚠</span><span id="err-msg">Accès refusé.</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-icon-wrap"><span class="input-icon">✉</span>
+            <input type="email" id="email" class="form-input" placeholder="admin@dabucci.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <div class="password-wrap">
+            <input type="password" id="password" class="form-input" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="password-toggle" id="pwd-toggle">👁</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn--primary btn--full mt-6" id="btn-login">Se connecter</button>
+      <div class="login-footer">DABUCCI Admin · Accès restreint</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase }          from '../js/supabase.js'
+    import { redirectIfLoggedIn, signIn, goTo } from '../js/session.js'
+
+    await redirectIfLoggedIn()
+
+    const emailEl    = document.getElementById('email')
+    const passwordEl = document.getElementById('password')
+    const btnLogin   = document.getElementById('btn-login')
+    const errBanner  = document.getElementById('err-banner')
+    const errMsg     = document.getElementById('err-msg')
+
+    function showErr(msg) { errMsg.textContent = msg; errBanner.classList.add('show') }
+    function hideErr()    { errBanner.classList.remove('show') }
+
+    document.getElementById('pwd-toggle').addEventListener('click', function() {
+      passwordEl.type = passwordEl.type === 'password' ? 'text' : 'password'
+      this.textContent = passwordEl.type === 'password' ? '👁' : '🙈'
+    })
+
+    async function doLogin() {
+      hideErr()
+      const email    = emailEl.value.trim()
+      const password = passwordEl.value
+      if (!email || !password) { showErr('Veuillez remplir tous les champs.'); return }
+
+      btnLogin.classList.add('btn--loading'); btnLogin.disabled = true
+      try {
+        const { user } = await signIn(email, password)
+        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+        if (!profile || !['admin', 'superadmin'].includes(profile.role)) {
+          await supabase.auth.signOut()
+          showErr('Accès non autorisé.')
+          btnLogin.classList.remove('btn--loading'); btnLogin.disabled = false
+          return
+        }
+        goTo('/admin/dashboard.html')
+      } catch(e) {
+        showErr('Email ou mot de passe incorrect.')
+        btnLogin.classList.remove('btn--loading'); btnLogin.disabled = false
+      }
+    }
+
+    btnLogin.addEventListener('click', doLogin)
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() })
+  </script>
+</body>
+</html>
